@@ -55,6 +55,19 @@ model User {
     image         String?
     accounts      Account[]
     sessions      Session[]
+    adverts       Advert[]
+}
+
+model Advert {
+    id          String   @id @default(cuid())
+    type        String   @default("rent") // sell, rent
+    title       String
+    description String
+    price       Int
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
+    author      User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+    authorId    String
 }
 
 model VerificationToken {
