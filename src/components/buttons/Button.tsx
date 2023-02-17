@@ -14,14 +14,26 @@ export enum IconOptions {
 
 interface ButtonProps {
   text?: string;
-  icon: IconOptions;
+  icon?: IconOptions;
   onClick?: () => void;
+  width?: number;
+  color?: string;
 }
 
-const Button: React.FC<ButtonProps> = ({ text, icon, onClick }) => {
+const Button: React.FC<ButtonProps> = ({
+  text,
+  icon,
+  onClick,
+  width,
+  color,
+}) => {
   return (
     <button
-      className="font-regular flex flex-row items-center justify-center rounded-full bg-white px-[1.1rem] py-[0.4rem] text-black shadow-sm transition-all hover:translate-y-[-2px] hover:shadow-md"
+      className={`font-regular flex flex-row items-center justify-center ${
+        width ? `w-[${width}rem]` : ""
+      } rounded-full ${
+        color ? `bg-${color}` : "bg-white"
+      } hover:shadow-m px-[1.1rem] py-[0.4rem] text-black shadow-sm transition-all hover:translate-y-[-2px]`}
       onClick={onClick}
     >
       {icon === IconOptions.UserCircle ? (
