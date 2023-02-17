@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { signIn, signOut, useSession } from "next-auth/react";
-import Button, { IconOptions } from "../buttons/Button";
+import Button, { IconOptions, ColorOptions } from "../buttons/Button";
 import { useRouter } from "next/router";
 
 const Navbar = () => {
@@ -19,12 +19,18 @@ const Navbar = () => {
         <Button
           icon={IconOptions.Plus}
           text={"Ny annonse"}
+          color={ColorOptions.white}
           onClick={() => void router.push("/ny-annonse")}
         />
-        <Button icon={IconOptions.Heart} text={"Varslinger"} />
+        <Button
+          icon={IconOptions.Heart}
+          text={"Varslinger"}
+          color={ColorOptions.white}
+        />
         <Button
           icon={IconOptions.UserCircle}
           text={sessionData ? "Bruker" : "Sign in"}
+          color={ColorOptions.white}
           onClick={sessionData ? () => void signOut() : () => void signIn()}
         />
       </div>
