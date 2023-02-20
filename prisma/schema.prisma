@@ -48,14 +48,17 @@ model Session {
 }
 
 model User {
-  id            String    @id @default(cuid())
-  name          String?
-  email         String?   @unique
-  emailVerified DateTime?
-  image         String?
-  accounts      Account[]
-  sessions      Session[]
-  adverts       Advert[]
+    id            String    @id @default(cuid())
+    name          String?
+    email         String?   @unique
+    emailVerified DateTime?
+    image         String?
+    phone         String?
+    address       String?
+    city          String?
+    accounts      Account[]
+    sessions      Session[]
+    adverts       Advert[]
 }
 
 model Advert {
