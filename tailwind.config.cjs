@@ -25,7 +25,7 @@ module.exports = {
         },
     },
     animation: {
-        'from-bottom': 'moving-line .8s ease .5s forwards',
+        'from-bottom': 'moving-line ease .6s forwards',
     },
     },
   },
