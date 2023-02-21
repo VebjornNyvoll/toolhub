@@ -2,7 +2,16 @@ import { type NextPage } from "next";
 import Head from "next/head";
 import Navbar from "../components/navbar/Navbar";
 import Searchbar from "../components/searchbar/Searchbar";
-import Button, { IconOptions } from "../components/buttons/Button";
+import Button, {
+  IconOptions,
+  ColorOptions,
+} from "../components/buttons/Button";
+import { signIn, signOut, useSession } from "next-auth/react";
+import ToolFeed from "./toolFeed";
+
+import { api } from "../utils/api";
+
+import router from "next/router";
 
 const Home: NextPage = () => {
   return (
@@ -14,15 +23,29 @@ const Home: NextPage = () => {
       </Head>
       <main className="flex min-h-screen flex-col bg-gray-100">
         <Navbar />
+
         <section className="justify-cente mx-32 mt-60 flex flex-col">
           <p className="max-w-xs font-sofia text-8xl font-bold text-emerald-700">
             LEI UTSTYR
           </p>
           <Searchbar />
           <div className="mb-8 flex gap-2">
-            <Button icon={IconOptions.QueueList} text="Alle verktøy" />
-            <Button icon={IconOptions.Wrench} text="Håndverktøy" />
-            <Button icon={IconOptions.Bolt} text="Elektroverktøy" />
+            <Button
+              color={ColorOptions.white}
+              icon={IconOptions.QueueList}
+              onClick={() => void router.push("/toolFeed")}
+              text="Alle verktøy"
+            />
+            <Button
+              color={ColorOptions.white}
+              icon={IconOptions.Wrench}
+              text="Håndverktøy"
+            />
+            <Button
+              color={ColorOptions.white}
+              icon={IconOptions.Bolt}
+              text="Elektroverktøy"
+            />
           </div>
           <p className="text-sm text-emerald-700">Eller lag en ny annonse</p>
         </section>
