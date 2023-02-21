@@ -3,6 +3,7 @@ interface InputFieldProps {
   name: string;
   placeholder?: string;
   className?: string;
+  type?: string;
 }
 
 const InputField = ({
@@ -10,6 +11,7 @@ const InputField = ({
   name,
   placeholder,
   className,
+  type,
 }: InputFieldProps) => {
   return (
     <label
@@ -17,7 +19,7 @@ const InputField = ({
     >
       <p>{label}</p>
       <input
-        type="text"
+        type={type ? type : "text"}
         name={name}
         className="rounded-full border-2 border-black bg-gray-100 p-2 px-4"
         placeholder={placeholder}

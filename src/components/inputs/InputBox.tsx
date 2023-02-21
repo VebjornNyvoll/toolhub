@@ -15,7 +15,7 @@ const InputBox = ({ label, name, placeholder, className }: InputBoxProps) => {
       <p>{label}</p>
       <textarea
         name={name}
-        className="h-full rounded-xl border-2 border-black bg-gray-100 p-2 px-4"
+        className="h-full rounded-xl border-2 border-black bg-gray-100 p-2 px-4 py-4"
         placeholder={placeholder}
       />
     </label>
