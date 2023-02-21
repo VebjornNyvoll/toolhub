@@ -10,7 +10,7 @@ const Navbar = () => {
   return (
     <div className="space-between absolute top-0 flex h-[8rem] w-full flex-row items-center justify-between bg-gray-100 px-[120px]">
       <p
-        className="font-warming text-4xl font-extrabold"
+        className="select-none font-warming text-4xl font-extrabold hover:cursor-pointer"
         onClick={() => void router.push("/")}
       >
         Toolhub
@@ -26,6 +26,7 @@ const Navbar = () => {
           icon={IconOptions.Heart}
           text={"Varslinger"}
           color={ColorOptions.white}
+          onClick={() => void router.push("/")}
         />
         <Button
           icon={IconOptions.UserCircle}
