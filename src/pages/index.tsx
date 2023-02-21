@@ -20,6 +20,7 @@ const Home: NextPage = () => {
           </p>
           <Searchbar />
           <div className="mb-8 flex gap-2">
+            <Button icon={IconOptions.QueueList} text="Alle verktøy" />
             <Button icon={IconOptions.Wrench} text="Håndverktøy" />
             <Button icon={IconOptions.Bolt} text="Elektroverktøy" />
           </div>

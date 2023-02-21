@@ -6,6 +6,7 @@ import {
   PlusIcon,
   WrenchScrewdriverIcon,
   BoltIcon,
+  QueueListIcon,
 } from "@heroicons/react/24/outline";
 
 export enum IconOptions {
@@ -14,6 +15,7 @@ export enum IconOptions {
   Plus = "Plus",
   Wrench = "Wrench",
   Bolt = "Bolt",
+  QueueList = "QueueList",
 }
 
 interface ButtonProps {
@@ -54,6 +56,9 @@ const Button: React.FC<ButtonProps> = ({
       ) : null}
       {icon === IconOptions.Bolt ? (
         <BoltIcon className="h-7 w-7" strokeWidth={1.5} />
+      ) : null}
+      {icon === IconOptions.QueueList ? (
+        <QueueListIcon className="h-7 w-7" strokeWidth={1.5} />
       ) : null}
       {text ? <p className="ml-2">{text}</p> : null}
     </button>
