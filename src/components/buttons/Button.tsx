@@ -14,7 +14,7 @@ export enum IconOptions {
 
 interface ButtonProps {
   text?: string;
-  icon: IconOptions;
+  icon?: IconOptions;
   onClick?: () => void;
 }
 
