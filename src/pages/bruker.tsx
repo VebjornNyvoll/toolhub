@@ -1,47 +1,25 @@
+import React from "react";
 import { type NextPage } from "next";
-import { useSession } from "next-auth/react";
 import Head from "next/head";
-import { useRouter } from "next/router";
-import { useEffect } from "react";
-import Button from "../components/buttons/Button";
 import InputField from "../components/inputs/InputField";
 import Navbar from "../components/navbar/Navbar";
 import { api } from "../utils/api";
 
 const Profile: NextPage = () => {
-  const { data: sessionData } = useSession();
-   useEffect(()=>{
-    document.querySelector("[name='name']").value = sessionData?.user.name; 
-    document.querySelector("[name='e-mail']").value = sessionData?.user.email; 
-    var phone = sessionData?.user.phone;
-    var address = sessionData?.user.address;
-    var city = sessionData?.user.city;
+  const { data: currentUser } = api.profile.getUser.useQuery();
 
-    console.log(sessionData?.user);
-    console.log(sessionData?.user.phone);
-    if(phone != null){
-      document.querySelector("[name='phone").value = phone;
-    }
-    if(address != null){
-      document.querySelector("[name='address").value = address;
-    }
-    if(city != null){
-      document.querySelector("[name='city").value = city;
-    }},[sessionData]);
+  const ctx = api.useContext();
 
-    const ctx = api.useContext();
-    const router = useRouter();
-
-    const { mutate: updateProfile } = api.profile.update.useMutation({
+    const { mutate: updateProfile } = api.profile.create.useMutation({
       onSuccess: (data) => {
         ctx.profile
           .invalidate()
           .then(() => {
             console.log("success");
-            // void router.push(`/annonser/${data.id}`);
           })
           .catch((err) => {
             console.log(err);
+            alert("Noe gikk galt, prøv igjen");
           });
       },
     });
@@ -83,23 +61,31 @@ const Profile: NextPage = () => {
                 label = "Navn" 
                 name="name"
                 placeholder="Fornavn Etternavn"
-                disabled/>
+                defaultValue={currentUser?.name}
+                disabled
+                />
                 <InputField 
                 label = "E-mail adresse" 
                 name="e-mail"
                 placeholder="eksempel@mail.no"
+                defaultValue={currentUser?.email}
                 disabled/>
                 <InputField 
                 label = "Telefonnummer" 
                 name="phone"
+                type="tel"
+                defaultValue={currentUser?.phone}
                 placeholder="12345678"/>
                 <InputField 
                 label = "Adresse" 
                 name="address"
+                type="address"
+                defaultValue={currentUser?.address}
                 placeholder="Daudbilbakken 1A"/>
                 <InputField 
                 label = "By" 
                 name="city"
+                defaultValue={currentUser?.city}
                 placeholder="Andeby"
                 />
               <div className="w-[15rem] self-end py-4">

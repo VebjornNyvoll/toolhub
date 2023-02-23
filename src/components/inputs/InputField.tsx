@@ -1,3 +1,5 @@
+import React from "react"
+
 interface InputFieldProps {
   label: string;
   name: string;
@@ -6,13 +8,8 @@ interface InputFieldProps {
   disabled?: boolean;
 }
 
-const InputField = ({
-  label,
-  name,
-  placeholder,
-  className,
-  disabled,
-}: InputFieldProps) => {
+const InputField = (props: InputFieldProps & React.HTMLProps<HTMLInputElement>) => {
+  const { label, className } = props;
   return (
     <label
       className={`flex flex-col gap-[0.3rem] ${className ? className : ""}`}
@@ -20,10 +17,8 @@ const InputField = ({
       <p>{label}</p>
       <input
         type="text"
-        name={name}
         className="rounded-full border-2 border-black bg-gray-100 p-2 px-4"
-        placeholder={placeholder}
-        disabled={disabled}
+        {...props}
       />
     </label>
   );
