@@ -4,36 +4,60 @@ import {
   UserCircleIcon,
   HeartIcon,
   PlusIcon,
+  WrenchScrewdriverIcon,
+  BoltIcon,
+  QueueListIcon,
 } from "@heroicons/react/24/outline";
 
 export enum IconOptions {
   UserCircle = "UserCircle",
   Heart = "Heart",
   Plus = "Plus",
+  Wrench = "Wrench",
+  Bolt = "Bolt",
+  QueueList = "QueueList",
 }
 
+export enum ColorOptions {
+  white = "white",
+  black = "black",
+}
 interface ButtonProps {
   text?: string;
   icon?: IconOptions;
+  flex?: boolean;
   onClick?: () => void;
-  width?: number;
-  color?: string;
+  color: ColorOptions;
+  className?: string;
 }
+
+const ColorCombinations = {
+  background: {
+    [ColorOptions.white]: "bg-white",
+    [ColorOptions.black]: "bg-black",
+  },
+  text: {
+    [ColorOptions.white]: "text-black",
+    [ColorOptions.black]: "text-white",
+  },
+};
 
 const Button: React.FC<ButtonProps> = ({
   text,
   icon,
   onClick,
-  width,
   color,
+  flex,
 }) => {
   return (
     <button
-      className={`font-regular flex flex-row items-center justify-center ${
-        width ? `w-[${width}rem]` : ""
-      } rounded-full ${
-        color ? `bg-${color}` : "bg-white"
-      } hover:shadow-m px-[1.1rem] py-[0.4rem] text-black shadow-sm transition-all hover:translate-y-[-2px]`}
+      className={`font-regular hover:shadow-m } flex flex-row items-center justify-center
+       rounded-full px-[1.1rem] py-[0.4rem] shadow-sm transition-all
+       hover:translate-y-[-2px] ${flex ? "w-full" : ""} ${
+        ColorCombinations.text[color]
+          ? ColorCombinations.text[color]
+          : "bg-white"
+      } ${ColorCombinations.background[color]}`}
       onClick={onClick}
     >
       {icon === IconOptions.UserCircle ? (
@@ -44,6 +68,15 @@ const Button: React.FC<ButtonProps> = ({
       ) : null}
       {icon === IconOptions.Plus ? (
         <PlusIcon className="h-7 w-7" strokeWidth={1.5} />
+      ) : null}
+      {icon === IconOptions.Wrench ? (
+        <WrenchScrewdriverIcon className="h-7 w-7" strokeWidth={1.5} />
+      ) : null}
+      {icon === IconOptions.Bolt ? (
+        <BoltIcon className="h-7 w-7" strokeWidth={1.5} />
+      ) : null}
+      {icon === IconOptions.QueueList ? (
+        <QueueListIcon className="h-7 w-7" strokeWidth={1.5} />
       ) : null}
       {text ? <p className="ml-2">{text}</p> : null}
     </button>

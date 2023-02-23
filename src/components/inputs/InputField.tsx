@@ -6,6 +6,7 @@ interface InputFieldProps {
   placeholder?: string;
   className?: string;
   disabled?: boolean;
+  type?: string;
 }
 
 const InputField = (props: InputFieldProps & React.HTMLProps<HTMLInputElement>) => {
@@ -16,7 +17,8 @@ const InputField = (props: InputFieldProps & React.HTMLProps<HTMLInputElement>) 
     >
       <p>{label}</p>
       <input
-        type="text"
+        type={type ? type: "text"}
+        name={name}
         className="rounded-full border-2 border-black bg-gray-100 p-2 px-4"
         {...props}
       />

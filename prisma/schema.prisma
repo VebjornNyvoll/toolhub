@@ -4,6 +4,10 @@ generator client {
 
 datasource db {
   provider = "sqlite"
+  // NOTE: When using postgresql, mysql or sqlserver, uncomment the @db.Text annotations in model Account below
+  // Further reading:
+  // https://next-auth.js.org/adapters/prisma#create-the-prisma-schema
+  // https://www.prisma.io/docs/reference/api-reference/prisma-schema-reference#string
   url      = env("DATABASE_URL")
 }
 
@@ -19,12 +23,12 @@ model Account {
   type              String
   provider          String
   providerAccountId String
-  refresh_token     String?
-  access_token      String?
+  refresh_token     String? // @db.Text
+  access_token      String? // @db.Text
   expires_at        Int?
   token_type        String?
   scope             String?
-  id_token          String?
+  id_token          String? // @db.Text
   session_state     String?
   user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -40,29 +44,31 @@ model Session {
 }
 
 model User {
-  id            String    @id @default(cuid())
-  name          String?
-  email         String?   @unique
-  emailVerified DateTime?
-  image         String?
-  address       String?
-  city          String?
-  phone         String?
-  accounts      Account[]
-  adverts       Advert[]
-  sessions      Session[]
+    id            String    @id @default(cuid())
+    name          String?
+    email         String?   @unique
+    emailVerified DateTime?
+    image         String?
+    phone         String?
+    address       String?
+    city          String?
+    accounts      Account[]
+    sessions      Session[]
+    adverts       Advert[]
 }
 
 model Advert {
-  id          String   @id @default(cuid())
-  type        String   @default("rent")
-  title       String
-  description String
-  price       Int
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  authorId    String
-  author      User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  id              String       @id @default(cuid())
+  type            String       @default("rent") // sell, rent
+  title           String
+  description     String
+  price           Int
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+  author          User         @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  authorId        String
+  SubCategory     SubCategory? @relation(fields: [subCategoryName], references: [name])
+  subCategoryName String?
 }
 
 model VerificationToken {
@@ -72,3 +78,17 @@ model VerificationToken {
 
   @@unique([identifier, token])
 }
+
+model Category {
+  name          String        @id
+  subCategories SubCategory[]
+}
+
+model SubCategory {
+  name         String   @id
+  category     Category @relation(fields: [categoryName], references: [name], onDelete: Cascade)
+  categoryName String
+  Adverts      Advert[]
+}
+
+// create a category with subcategories
