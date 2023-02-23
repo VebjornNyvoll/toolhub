@@ -10,7 +10,7 @@ interface InputFieldProps {
 }
 
 const InputField = (props: InputFieldProps & React.HTMLProps<HTMLInputElement>) => {
-  const { label, className } = props;
+  const { label, className, type, name } = props;
   return (
     <label
       className={`flex flex-col gap-[0.3rem] ${className ? className : ""}`}
