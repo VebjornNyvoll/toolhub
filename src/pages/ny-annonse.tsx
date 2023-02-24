@@ -32,9 +32,9 @@ const NyAnnonse: NextPage = () => {
 
   const router = useRouter();
 
-  const { mutate: createAdvert } = api.advertisment.create.useMutation({
+  const { mutate: createAdvert } = api.advertisement.create.useMutation({
     onSuccess: (data) => {
-      ctx.advertisment
+      ctx.advertisement
         .invalidate()
         .then(() => {
           console.log("success");
