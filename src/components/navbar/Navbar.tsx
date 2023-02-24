@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { signIn, signOut, useSession } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import Button, { IconOptions, ColorOptions } from "../buttons/Button";
 import { useRouter } from "next/router";
 
@@ -32,7 +32,11 @@ const Navbar = () => {
           icon={IconOptions.UserCircle}
           text={sessionData ? "Bruker" : "Sign in"}
           color={ColorOptions.white}
-          onClick={sessionData ? () => void signOut() : () => void signIn()}
+          onClick={
+            sessionData
+              ? () => void router.push("/bruker")
+              : () => void signIn()
+          }
         />
       </div>
     </div>

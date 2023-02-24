@@ -2,11 +2,23 @@ import { z } from "zod";
 import { createTRPCRouter, publicProcedure, protectedProcedure } from "../trpc";
 
 export const profileRouter = createTRPCRouter({
-    getUser: publicProcedure.query(({ ctx }) => {
+    getLoggedInUser: publicProcedure.query(({ ctx }) => {
+        if (!ctx.session) {
+            return null;
+        }
         return ctx.prisma.user.findUnique(
             {where: {id: ctx.session.user.id}}
         );
       }),
+    getUser: publicProcedure.input(
+        z.object({
+            id: z.string(),
+        })
+    ).query(({ ctx, input }) => {
+        return ctx.prisma.user.findUnique(
+            {where: {id: input.id}}
+        );
+        }),
     create: protectedProcedure.input(
         z.object({
             phone: z.string(),
@@ -23,8 +35,7 @@ export const profileRouter = createTRPCRouter({
      },
       });
     }),
-    
-  });
+});
 
   
 

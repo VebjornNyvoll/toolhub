@@ -1,20 +1,23 @@
 //import Image from "next/image";
+import { useRouter } from "next/router";
 
 interface AdProps {
-  name: string;
+  title: string;
   price: number;
-  imgSrc: string;
-  category: string;
+  id: string;
 }
 
-const Ad = () => {
+const Ad = ({ title, price, id }: AdProps) => {
+  const router = useRouter();
+
   return (
-    <div className=" m-4 hover:translate-y-[-2px]">
-      {/*<p className=" h-48 w-48 rounded-2xl bg-white">-bilde-</p>
-      <Image src={""} alt={"Hei"} width={250} height={300} /> */}
-      <img className="h-48 w-48 rounded-2xl"></img>
-      <p className="ml-4 mt-1 w-48 text-sm">-navn- </p>
-      <p className="ml-4 w-48 text-xs text-gray-400">-pris- </p>
+    <div
+      className=" m-4 hover:translate-y-[-2px]"
+      onClick={() => void router.push(`/annonser/${id}`)}
+    >
+      <div className="h-48 w-48 rounded-2xl bg-white shadow-sm"></div>
+      <p className="text-md ml-4 mt-3 w-48">{title}</p>
+      <p className="ml-4 w-48 text-sm text-gray-400">{price}</p>
     </div>
   );
 };
