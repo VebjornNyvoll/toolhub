@@ -1,17 +1,22 @@
+import React from "react";
+
 interface InputFieldProps {
   label: string;
   name: string;
   placeholder?: string;
+  defaultValue?: string;
   className?: string;
+  disabled?: boolean;
   type?: string;
 }
 
 const InputField = ({
   label,
   name,
-  placeholder,
   className,
   type,
+  defaultValue,
+  placeholder,
 }: InputFieldProps) => {
   return (
     <label
@@ -20,9 +25,10 @@ const InputField = ({
       <p>{label}</p>
       <input
         type={type ? type : "text"}
+        defaultValue={defaultValue}
+        placeholder={placeholder}
         name={name}
         className="rounded-full border-2 border-black bg-gray-100 p-2 px-4"
-        placeholder={placeholder}
       />
     </label>
   );

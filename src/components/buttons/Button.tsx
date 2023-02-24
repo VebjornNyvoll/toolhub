@@ -26,6 +26,7 @@ interface ButtonProps {
   text?: string;
   icon?: IconOptions;
   flex?: boolean;
+  square?: boolean;
   onClick?: () => void;
   color: ColorOptions;
   className?: string;
@@ -47,12 +48,15 @@ const Button: React.FC<ButtonProps> = ({
   icon,
   onClick,
   color,
+  square,
   flex,
 }) => {
   return (
     <button
-      className={`font-regular hover:shadow-m } flex flex-row items-center justify-center
-       rounded-full px-[1.1rem] py-[0.4rem] shadow-sm transition-all
+      className={`font-regular hover:shadow-m } z-10 flex flex-row items-center justify-center
+       ${
+         !square ? "rounded-full py-[0.4rem]" : "rounded-md py-[0.7rem]"
+       } px-[1.1rem] shadow-sm transition-all
        hover:translate-y-[-2px] ${flex ? "w-full" : ""} ${
         ColorCombinations.text[color]
           ? ColorCombinations.text[color]

@@ -7,7 +7,6 @@ import Button, {
   ColorOptions,
 } from "../components/buttons/Button";
 import { signIn, signOut, useSession } from "next-auth/react";
-import ToolFeed from "./toolFeed";
 
 import { api } from "../utils/api";
 
@@ -33,22 +32,25 @@ const Home: NextPage = () => {
             <Button
               color={ColorOptions.white}
               icon={IconOptions.QueueList}
-              onClick={() => void router.push("/toolFeed")}
+              onClick={() => void router.push("/annonser")}
               text="Alle verktøy"
+              square={true}
             />
             <Button
               color={ColorOptions.white}
               icon={IconOptions.Wrench}
               text="Håndverktøy"
+              square={true}
             />
             <Button
               color={ColorOptions.white}
               icon={IconOptions.Bolt}
               text="Elektroverktøy"
+              square={true}
             />
           </div>
           <p
-            className="text-md text-emerald-700 hover:cursor-pointer"
+            className="text-md mt-[-0.5rem] cursor-pointer text-emerald-700"
             onClick={() => void router.push("/ny-annonse")}
           >
             Eller lag en ny annonse
