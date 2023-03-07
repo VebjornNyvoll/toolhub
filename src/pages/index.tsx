@@ -7,6 +7,7 @@ import Button, {
   ColorOptions,
 } from "../components/buttons/Button";
 import { signIn, signOut, useSession } from "next-auth/react";
+import Link from "next/link";
 
 import { api } from "../utils/api";
 
@@ -32,19 +33,21 @@ const Home: NextPage = () => {
             <Button
               color={ColorOptions.white}
               icon={IconOptions.QueueList}
-              onClick={() => void router.push("/annonser")}
+              onClick={() => void router.push({pathname: "/annonser", query: {categoryName: ""}})} // Sender "" for å få alle annonser
               text="Alle verktøy"
               square={true}
             />
             <Button
               color={ColorOptions.white}
               icon={IconOptions.Wrench}
+              onClick={() => void router.push({pathname: "/annonser", query: {categoryName: "Håndverktøy"}})}
               text="Håndverktøy"
               square={true}
             />
             <Button
               color={ColorOptions.white}
               icon={IconOptions.Bolt}
+              onClick={() => void router.push({pathname: "/annonser", query: {categoryName: "Elektroverktøy"}})}
               text="Elektroverktøy"
               square={true}
             />

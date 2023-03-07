@@ -44,17 +44,17 @@ model Session {
 }
 
 model User {
-    id            String    @id @default(cuid())
-    name          String?
-    email         String?   @unique
-    emailVerified DateTime?
-    image         String?
-    phone         String?
-    address       String?
-    city          String?
-    accounts      Account[]
-    sessions      Session[]
-    adverts       Advert[]
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  phone         String?
+  address       String?
+  city          String?
+  accounts      Account[]
+  sessions      Session[]
+  adverts       Advert[]
 }
 
 model Advert {
@@ -67,6 +67,8 @@ model Advert {
   updatedAt       DateTime     @updatedAt
   author          User         @relation(fields: [authorId], references: [id], onDelete: Cascade)
   authorId        String
+  category        Category?    @relation(fields: [categoryName], references: [name])
+  categoryName    String?      
   SubCategory     SubCategory? @relation(fields: [subCategoryName], references: [name])
   subCategoryName String?
 }
@@ -80,8 +82,9 @@ model VerificationToken {
 }
 
 model Category {
-  name          String        @id
-  subCategories SubCategory[]
+  name            String      @id
+  subCategories   SubCategory[]
+  Adverts         Advert[]
 }
 
 model SubCategory {

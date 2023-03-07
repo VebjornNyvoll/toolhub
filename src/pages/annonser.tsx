@@ -4,11 +4,21 @@ import Button, { ColorOptions } from "../components/buttons/Button";
 import Navbar from "../components/navbar/Navbar";
 import Head from "next/head";
 import { api } from "../utils/api";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 
 const ToolFeed: NextPage = () => {
-  const { data: advertisements } = api.advertisement.getAll.useQuery();
+  const router = useRouter();
+  let selectedCategory = router.query.categoryName;
 
-  //importere liste med kategorier som vi kan iterere gjennom til knappene
+  const { data: advertisements } = api.advertisement.getAll.useQuery();
+   //importere liste med kategorier som vi kan iterere gjennom til knappene 
+  let { data: adsByFilter } = api.advertisement.getManyByCategory.useQuery({categoryName: selectedCategory});
+
+  if (selectedCategory === "") {
+    adsByFilter = advertisements;
+  }
+ 
   return (
     <>
       <Head>
@@ -23,10 +33,10 @@ const ToolFeed: NextPage = () => {
             Se gjennom <span className="text-emerald-700">alle verktøy</span>
           </p>
           <p className="font-futura text-md mt-10 text-gray-400">
-            Fant {advertisements?.length} resultater med valgte filtre
+            Fant {adsByFilter?.length} resultater med valgte filtre
           </p>
           <div className="mt-5 flex max-w-full flex-row flex-wrap gap-[0.2rem]">
-            {advertisements?.map((ad) => (
+            {adsByFilter?.map((ad) => (
               <Ad key={ad.id} title={ad.title} price={ad.price} id={ad.id} />
             ))}
           </div>
