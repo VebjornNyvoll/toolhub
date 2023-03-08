@@ -52,6 +52,8 @@ model User {
     phone         String?
     address       String?
     city          String?
+    totalRatingpoints Int @default(0)
+    totalRatings Int @default(0)
     accounts      Account[]
     sessions      Session[]
     adverts       Advert[]
