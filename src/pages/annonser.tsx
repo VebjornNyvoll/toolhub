@@ -5,19 +5,28 @@ import Navbar from "../components/navbar/Navbar";
 import Head from "next/head";
 import { api } from "../utils/api";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
 
 const ToolFeed: NextPage = () => {
   const router = useRouter();
-  let selectedCategory = router.query.categoryName;
+  let selectedCategory = router.query.categoryName as string;
+  if(!selectedCategory){
+    selectedCategory = "";
+  }
 
-  const { data: advertisements } = api.advertisement.getAll.useQuery();
+
    //importere liste med kategorier som vi kan iterere gjennom til knappene 
   let { data: adsByFilter } = api.advertisement.getManyByCategory.useQuery({categoryName: selectedCategory});
 
-  if (selectedCategory === "") {
-    adsByFilter = advertisements;
-  }
+  if (selectedCategory === "alle"){
+    adsByFilter = api.advertisement.getAll.useQuery().data;
+  } 
+  else if (selectedCategory === ""){
+    adsByFilter = api.advertisement.getManyBySearch.useQuery({searchInput: router.query.searchInput as string}).data;
+    // if (!adsByFilter){
+    //   adsByFilter = api.advertisement.getAll.useQuery().data;
+    // };
+    // TODO: Fix this! Need to make it so that if there are no ads by search, it will show all ads
+  };
  
   return (
     <>
