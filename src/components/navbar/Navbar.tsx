@@ -29,6 +29,12 @@ const Navbar = () => {
           onClick={() => void router.push("/")}
         />
         <Button
+          icon={IconOptions.Archive}
+          text={"Dine annonser"}
+          color={ColorOptions.white}
+          onClick={() => void router.push("/egne_annonser")}
+        />
+        <Button
           icon={IconOptions.UserCircle}
           text={sessionData ? "Bruker" : "Sign in"}
           color={ColorOptions.white}

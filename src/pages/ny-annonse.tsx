@@ -172,6 +172,7 @@ const NyAnnonse: NextPage = () => {
                   type="submit"
                   value="Opprett annonse"
                   className="w-full cursor-pointer rounded-md bg-black px-4 py-2 text-white hover:bg-emerald-700"
+                  onClick={() => void router.push("/egne_annonser")} //lukker fane etter lagd annonse
                 />
               </label>
             </div>
