@@ -56,7 +56,7 @@ const Home: NextPage = () => {
             Eller lag en ny annonse
           </p>
         </section>
-        <div className="invisible absolute bottom-0 right-12 z-0 xl:visible">
+        <div className="invisible absolute right-20 bottom-0 z-0 xl:visible">
           <svg
             width="807"
             height="573"

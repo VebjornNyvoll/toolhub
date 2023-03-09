@@ -7,6 +7,7 @@ import {
   WrenchScrewdriverIcon,
   BoltIcon,
   QueueListIcon,
+  ArchiveBoxIcon,
 } from "@heroicons/react/24/outline";
 
 export enum IconOptions {
@@ -16,6 +17,7 @@ export enum IconOptions {
   Wrench = "Wrench",
   Bolt = "Bolt",
   QueueList = "QueueList",
+  Archive = "Archive",
 }
 
 export enum ColorOptions {
@@ -81,6 +83,9 @@ const Button: React.FC<ButtonProps> = ({
       ) : null}
       {icon === IconOptions.QueueList ? (
         <QueueListIcon className="h-7 w-7" strokeWidth={1.5} />
+      ) : null}
+      {icon === IconOptions.Archive ? (
+        <ArchiveBoxIcon className="h-7 w-7" strokeWidth={1.5} />
       ) : null}
       {text ? <p className="ml-2">{text}</p> : null}
     </button>
