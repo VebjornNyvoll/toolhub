@@ -76,7 +76,19 @@ const NyAnnonse: NextPage = () => {
                     {author?.name}
                   </p>
                   <p>{author?.phone ? author.phone : "Mangler tlf"}</p>
-                  <p>{author?.totalRatingpoints ? Math.round(author.totalRatingpoints/author.totalRatings * 100)/100 + "/6 (" + author.totalRatings + " rangeringer)" : "Ikke fått noen ratinger"}</p>
+                  <p>
+                    {author?.totalRatingpoints
+                      ? (
+                          Math.round(
+                            (author.totalRatingpoints / author.totalRatings) *
+                              100
+                          ) / 100
+                        ).toString() +
+                        "/6 (" +
+                        author.totalRatings.toString() +
+                        " rangeringer)"
+                      : "Ikke fått noen ratinger"}
+                  </p>
                 </div>
               </div>
             </div>

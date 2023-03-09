@@ -54,22 +54,22 @@ const NyAnnonse: NextPage = () => {
       rating: { value: string };
     };
     const rating: number = +target.rating.value;
-      let totalRatingsPoints = rating;
-      let totalRatings = 1;
-      let userid = "";
-      if (!user?.totalRatingpoints) {
-        return null;
-      } else {
-        totalRatingsPoints += user.totalRatingpoints;
-        totalRatings += user.totalRatings;
-        userid = user?.id;
-      }
-      
-      addRating({
-        rating: totalRatingsPoints,
-        amountraters: totalRatings,
-        userid: userid,
-      });
+    let totalRatingsPoints = rating;
+    let totalRatings = 1;
+    let userid = "";
+    if (!user?.totalRatingpoints) {
+      return null;
+    } else {
+      totalRatingsPoints += user.totalRatingpoints;
+      totalRatings += user.totalRatings;
+      userid = user?.id;
+    }
+
+    addRating({
+      rating: totalRatingsPoints,
+      amountraters: totalRatings,
+      userid: userid,
+    });
   };
 
   return (
@@ -90,8 +90,23 @@ const NyAnnonse: NextPage = () => {
             </div>
           </div>
           <p>{`Epost: ${user?.email ? user?.email : "Har ikke epost"}`}</p>
-          <p>{user?.totalRatingpoints ? Math.round(user.totalRatingpoints/user.totalRatings * 100)/100 + "/6 (" + user.totalRatings + " rangeringer)" : "Ikke fått noen ratinger"}</p>
-          <form title="Gi rating" onSubmit={(e) => handleSubmit(e)} className="flex w-full flex-col gap-8">
+          <p>
+            {user?.totalRatingpoints
+              ? (
+                  Math.round(
+                    (user.totalRatingpoints / user.totalRatings) * 100
+                  ) / 100
+                ).toString() +
+                "/6 (" +
+                user.totalRatings.toString() +
+                " rangeringer)"
+              : "Ikke fått noen ratinger"}
+          </p>
+          <form
+            title="Gi rating"
+            onSubmit={(e) => handleSubmit(e)}
+            className="flex w-full flex-col gap-8"
+          >
             <div className="flex w-full flex-row gap-8">
               <InputField
                 label=""
@@ -102,10 +117,10 @@ const NyAnnonse: NextPage = () => {
                 placeholder="1-6"
               />
               <input
-                  type="submit"
-                  value="Gi rating"
-                  className="w-full cursor-pointer rounded-md bg-black px-4 py-2 text-white hover:bg-emerald-700"
-                />
+                type="submit"
+                value="Gi rating"
+                className="w-full cursor-pointer rounded-md bg-black px-4 py-2 text-white hover:bg-emerald-700"
+              />
             </div>
           </form>
         </div>
