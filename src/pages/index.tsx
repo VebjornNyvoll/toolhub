@@ -21,7 +21,7 @@ const Home: NextPage = () => {
       search: { value: string };
     };
     // console.log(target.search.value);
-    router.push({pathname: "/annonser", query: {searchInput: "Hammer"}});
+    router.push({pathname: "/annonser", query: {searchInput: target.search.value}});
   };
   return (
     <>

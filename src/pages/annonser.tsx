@@ -13,20 +13,27 @@ const ToolFeed: NextPage = () => {
     selectedCategory = "";
   }
 
+  let foundText = "Fant {adsByFilter?.length} resultater med valgte filtre";
 
    //importere liste med kategorier som vi kan iterere gjennom til knappene 
   let { data: adsByFilter } = api.advertisement.getManyByCategory.useQuery({categoryName: selectedCategory});
+  let advertisements = api.advertisement.getAll.useQuery().data;
 
+  // Dersom brukeren har trykket på knappen "alle", skal alle annonser vises
   if (selectedCategory === "alle"){
-    adsByFilter = api.advertisement.getAll.useQuery().data;
+    adsByFilter = advertisements;
   } 
+  // Ved bruk av søkefeltet settes selectedCategory til "" og vi må sjekke om det er noen annonser som matcher søket
   else if (selectedCategory === ""){
     adsByFilter = api.advertisement.getManyBySearch.useQuery({searchInput: router.query.searchInput as string}).data;
-    // if (!adsByFilter){
-    //   adsByFilter = api.advertisement.getAll.useQuery().data;
-    // };
-    // TODO: Fix this! Need to make it so that if there are no ads by search, it will show all ads
+    // Dersom det ikke er noen annonser som matcher søket, skal alle annonser vises
+    if (adsByFilter?.length === 0 || adsByFilter === undefined){
+      adsByFilter = advertisements;
+      foundText = "Fant ingen annonser innenfor søket, viser alle annonser";
+    };
   };
+
+
  
   return (
     <>
@@ -42,7 +49,7 @@ const ToolFeed: NextPage = () => {
             Se gjennom <span className="text-emerald-700">alle verktøy</span>
           </p>
           <p className="font-futura text-md mt-10 text-gray-400">
-            Fant {adsByFilter?.length} resultater med valgte filtre
+            {foundText}
           </p>
           <div className="mt-5 flex max-w-full flex-row flex-wrap gap-[0.2rem]">
             {adsByFilter?.map((ad) => (
