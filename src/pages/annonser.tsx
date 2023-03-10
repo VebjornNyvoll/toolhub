@@ -45,7 +45,7 @@ const ToolFeed: NextPage = () => {
       </Head>
       <main className="flex min-h-screen flex-col bg-gray-100">
         <Navbar />
-        <section className="mt-40 flex flex-col px-[120px]">
+        <section className="mt-40 flex flex-col gap-5 px-[120px]">
           <p className="font-futura text-2xl">
             Se gjennom <span className="text-emerald-700">alle verktøy</span>
           </p>

@@ -44,17 +44,19 @@ model Session {
 }
 
 model User {
-  id            String    @id @default(cuid())
-  name          String?
-  email         String?   @unique
-  emailVerified DateTime?
-  image         String?
-  phone         String?
-  address       String?
-  city          String?
-  accounts      Account[]
-  sessions      Session[]
-  adverts       Advert[]
+    id            String    @id @default(cuid())
+    name          String?
+    email         String?   @unique
+    emailVerified DateTime?
+    image         String?
+    phone         String?
+    address       String?
+    city          String?
+    totalRatingpoints Int @default(0)
+    totalRatings Int @default(0)
+    accounts      Account[]
+    sessions      Session[]
+    adverts       Advert[]
 }
 
 model Advert {
@@ -71,6 +73,7 @@ model Advert {
   categoryName    String?      
   SubCategory     SubCategory? @relation(fields: [subCategoryName], references: [name])
   subCategoryName String?
+  availability    Boolean     @default(true)
 }
 
 model VerificationToken {

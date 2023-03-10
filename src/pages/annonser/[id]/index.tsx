@@ -42,6 +42,10 @@ const NyAnnonse: NextPage = () => {
     }
   );
 
+  const updateAvailability = () => {
+    //TODO: finn availability fra databasen og endre fra true til false ved leie
+  };
+
   return (
     <>
       <Head>
@@ -62,7 +66,12 @@ const NyAnnonse: NextPage = () => {
                 <p className="mb-3 text-3xl font-semibold text-black">
                   {advert?.price} NOK
                 </p>
-                <Button text="Lei ut" color={ColorOptions.black} />
+                <Button
+                  text="Lei ut"
+                  color={ColorOptions.black}
+                  onClick={updateAvailability} //kaller på funksjon i toppen som ikke er skrevet enda
+                  //onClick=disable button, grå ut knapp
+                />
               </div>
               <div className="flex h-[6rem] w-[16rem] flex-row items-center gap-3 rounded-md bg-gray-100 p-4">
                 <div className="h-[2.5rem] w-[2.5rem] rounded-full bg-black"></div>
@@ -76,6 +85,19 @@ const NyAnnonse: NextPage = () => {
                     {author?.name}
                   </p>
                   <p>{author?.phone ? author.phone : "Mangler tlf"}</p>
+                  <p>
+                    {author?.totalRatingpoints
+                      ? (
+                          Math.round(
+                            (author.totalRatingpoints / author.totalRatings) *
+                              100
+                          ) / 100
+                        ).toString() +
+                        "/6 (" +
+                        author.totalRatings.toString() +
+                        " rangeringer)"
+                      : "Ikke fått noen ratinger"}
+                  </p>
                 </div>
               </div>
             </div>
