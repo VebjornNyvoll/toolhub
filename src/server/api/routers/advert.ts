@@ -27,13 +27,6 @@ export const advertRouter = createTRPCRouter({
         title: {
           contains: input.searchInput,
         },
-        // OR: [
-        //   title: {
-        //     contains: input.searchInput,},
-        //     subCategoryName: {
-        //       contains: input.searchInput,},
-        // ]
-        
       },
     });
   }),
@@ -48,6 +41,19 @@ export const advertRouter = createTRPCRouter({
       },
     });
   }),
+  avability: protectedProcedure
+    .input(
+      z.object({
+        advertId: z.string(),
+        available: z.boolean(),
+      })
+    )
+    .mutation(({ ctx, input }) => {
+      return ctx.prisma.advert.update({
+        where: { id: input.advertId },
+        data: { availability: input.available },
+      });
+    }),
   create: protectedProcedure.input(
     z.object({
       title: z.string(),

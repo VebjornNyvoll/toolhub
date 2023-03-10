@@ -5,6 +5,7 @@ import Navbar from "../components/navbar/Navbar";
 import Head from "next/head";
 import { api } from "../utils/api";
 import { useRouter } from "next/router";
+import { Searchbar } from "../components/searchbar/Searchbar";
 
 const ToolFeed: NextPage = () => {
   const router = useRouter();
@@ -16,8 +17,8 @@ const ToolFeed: NextPage = () => {
   let foundText = "Fant {adsByFilter?.length} resultater med valgte filtre";
 
    //importere liste med kategorier som vi kan iterere gjennom til knappene 
-  let { data: adsByFilter } = api.advertisement.getManyByCategory.useQuery({categoryName: selectedCategory});
-  let advertisements = api.advertisement.getAll.useQuery().data;
+  let { data: adsByFilter } = api.advertisement.getManyByCategory.useQuery({categoryName: selectedCategory}).filter((ad) => ad.availability);
+  let advertisements = api.advertisement.getAll.useQuery().data?.filter((ad) => ad.availability);
 
   // Dersom brukeren har trykket på knappen "alle", skal alle annonser vises
   if (selectedCategory === "alle"){
