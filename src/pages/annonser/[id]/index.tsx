@@ -65,7 +65,11 @@ const NyAnnonse: NextPage = () => {
                 <Button
                   text="Lei ut"
                   color={ColorOptions.black}
-                  //onClick=disable button, grå ut knapp
+                  onClick={() =>
+                    void router.push(
+                      id ? `/annonser/lei-ut/${id as string}/` : "/"
+                    )
+                  }
                 />
               </div>
               <div className="flex h-[6rem] w-[16rem] flex-row items-center gap-3 rounded-md bg-gray-100 p-4">
