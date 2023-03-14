@@ -9,8 +9,6 @@ import Searchbar from "../components/searchbar/Searchbar";
 const ToolFeed: NextPage = () => {
   const { data: advertisements } = api.advertisement.getAll.useQuery();
 
-  const availableAds = advertisements?.filter((ad) => ad.availability); //TODO: prøvde å filtrere ut annonser som har availability true, funker det?
-
   //importere liste med kategorier som vi kan iterere gjennom til knappene
   return (
     <>
@@ -30,8 +28,8 @@ const ToolFeed: NextPage = () => {
             Fant {advertisements?.length} resultater med valgte filtre
           </p>
           <div className="mt-5 flex max-w-full flex-row flex-wrap gap-[0.2rem]">
-            {availableAds?.map((ad) => (
-              <Ad key={ad.id} title={ad.title} price={ad.price} id={ad.id} /> //TODO: itererer gjennom Ads som har availability true, funker det?
+            {advertisements?.map((ad) => (
+              <Ad key={ad.id} title={ad.title} price={ad.price} id={ad.id} />
             ))}
           </div>
         </section>

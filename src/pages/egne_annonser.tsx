@@ -4,13 +4,15 @@ import Button, { ColorOptions } from "../components/buttons/Button";
 import Navbar from "../components/navbar/Navbar";
 import Head from "next/head";
 import { api } from "../utils/api";
+import { useReducer } from "react";
+import { empty } from "@prisma/client/runtime";
 
 const ToolFeed: NextPage = () => {
   const { data: advertisements } = api.advertisement.getAll.useQuery();
 
-  const user = api.profile.getLoggedInUser.useQuery().data?.id;
+  const userId = api.profile.getLoggedInUser.useQuery().data?.id;
 
-  const myAds = advertisements?.filter((ad) => ad.authorId == user);
+  const myAds = advertisements?.filter((ad) => ad.authorId == userId);
 
   //TODO?: importere liste med kategorier som vi kan iterere gjennom til knappene
   return (
@@ -22,12 +24,19 @@ const ToolFeed: NextPage = () => {
       </Head>
       <main className="flex min-h-screen flex-col bg-gray-100">
         <Navbar />
-        <section className="mt-40 flex flex-col px-[120px]">
-          <p className="font-futura text-2xl">Dine verktøy</p>
-          <p className="font-futura text-md mt-5 text-gray-400">
-            {myAds?.length} av dine {myAds?.length} verktøy er tilgjengelige.{" "}
-            {/* Legge til attributt på annonse som inneholder tilgjengelighet, så kan man vel få ut antall av ledige annonser */}
-          </p>
+        <section className="mt-48 flex flex-col px-[120px]">
+          {userId === undefined ? (
+            <p className="font-futura text-center text-2xl">
+              Du må være logget inn for å se dine verktøy.
+            </p>
+          ) : (
+            <>
+              <p className="font-futura text-2xl">Dine verktøy</p>
+              <p className="font-futura text-md mt-5 text-gray-400">
+                Du har {myAds?.length} verktøy til utlån.
+              </p>
+            </>
+          )}
           <div className="mt-5 flex max-w-full flex-row flex-wrap gap-[0.2rem]">
             {myAds?.map((ad) => (
               <Ad key={ad.id} title={ad.title} price={ad.price} id={ad.id} />

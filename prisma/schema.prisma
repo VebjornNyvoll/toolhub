@@ -71,7 +71,6 @@ model Advert {
   authorId        String
   SubCategory     SubCategory? @relation(fields: [subCategoryName], references: [name])
   subCategoryName String?
-  availability    Boolean     @default(true)
 }
 
 model VerificationToken {

@@ -42,10 +42,6 @@ const NyAnnonse: NextPage = () => {
     }
   );
 
-  const updateAvailability = () => {
-    //TODO: finn availability fra databasen og endre fra true til false ved leie
-  };
-
   return (
     <>
       <Head>
@@ -69,7 +65,6 @@ const NyAnnonse: NextPage = () => {
                 <Button
                   text="Lei ut"
                   color={ColorOptions.black}
-                  onClick={updateAvailability} //kaller på funksjon i toppen som ikke er skrevet enda
                   //onClick=disable button, grå ut knapp
                 />
               </div>
