@@ -7,22 +7,12 @@ import Button, {
   ColorOptions,
 } from "../components/buttons/Button";
 import { signIn, signOut, useSession } from "next-auth/react";
-import Link from "next/link";
 
 import { api } from "../utils/api";
 
 import router from "next/router";
-import InputField from "../components/inputs/InputField";
 
 const Home: NextPage = () => {
-  const handleSearchSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const target = e.target as typeof e.target & {
-      search: { value: string };
-    };
-    // console.log(target.search.value);
-    router.push({pathname: "/annonser", query: {searchInput: target.search.value}});
-  };
   return (
     <>
       <Head>
@@ -37,33 +27,24 @@ const Home: NextPage = () => {
           <p className="max-w-xs font-sofia text-8xl font-bold text-emerald-700">
             LEI UTSTYR
           </p>
-          <form onSubmit={(e) => handleSearchSubmit(e)}>
-            <Searchbar
-              name="search"
-              placeholder="Søk etter verktøy!"
-              defaultValue=""
-            />
-          </form>
-          
+          <Searchbar />
           <div className="mb-8 flex gap-2">
             <Button
               color={ColorOptions.white}
               icon={IconOptions.QueueList}
-              onClick={() => void router.push({pathname: "/annonser", query: {categoryName: "alle"}})} // Sender "" for å få alle annonser
+              onClick={() => void router.push("/annonser")}
               text="Alle verktøy"
               square={true}
             />
             <Button
               color={ColorOptions.white}
               icon={IconOptions.Wrench}
-              onClick={() => void router.push({pathname: "/annonser", query: {categoryName: "Håndverktøy"}})}
               text="Håndverktøy"
               square={true}
             />
             <Button
               color={ColorOptions.white}
               icon={IconOptions.Bolt}
-              onClick={() => void router.push({pathname: "/annonser", query: {categoryName: "Elektroverktøy"}})}
               text="Elektroverktøy"
               square={true}
             />

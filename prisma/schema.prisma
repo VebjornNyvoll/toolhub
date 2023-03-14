@@ -69,8 +69,6 @@ model Advert {
   updatedAt       DateTime     @updatedAt
   author          User         @relation(fields: [authorId], references: [id], onDelete: Cascade)
   authorId        String
-  category        Category?    @relation(fields: [categoryName], references: [name])
-  categoryName    String?      
   SubCategory     SubCategory? @relation(fields: [subCategoryName], references: [name])
   subCategoryName String?
   availability    Boolean     @default(true)
@@ -85,9 +83,8 @@ model VerificationToken {
 }
 
 model Category {
-  name            String      @id
-  subCategories   SubCategory[]
-  Adverts         Advert[]
+  name          String        @id
+  subCategories SubCategory[]
 }
 
 model SubCategory {
