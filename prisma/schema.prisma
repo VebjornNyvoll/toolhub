@@ -44,17 +44,18 @@ model Session {
 }
 
 model User {
-    id            String    @id @default(cuid())
-    name          String?
-    email         String?   @unique
-    emailVerified DateTime?
-    image         String?
-    phone         String?
-    address       String?
-    city          String?
-    accounts      Account[]
-    sessions      Session[]
-    adverts       Advert[]
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  phone         String?
+  address       String?
+  city          String?
+  accounts      Account[]
+  sessions      Session[]
+  adverts       Advert[]
+  bookings      Booking[]
 }
 
 model Advert {
@@ -69,6 +70,7 @@ model Advert {
   authorId        String
   SubCategory     SubCategory? @relation(fields: [subCategoryName], references: [name])
   subCategoryName String?
+  bookings        Booking[]
 }
 
 model VerificationToken {
@@ -91,4 +93,13 @@ model SubCategory {
   Adverts      Advert[]
 }
 
-// create a category with subcategories
+model Booking {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  advert    Advert   @relation(fields: [advertId], references: [id], onDelete: Cascade)
+  advertId  String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+  date      DateTime
+  comment   String?
+}

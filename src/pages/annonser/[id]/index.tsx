@@ -62,7 +62,15 @@ const NyAnnonse: NextPage = () => {
                 <p className="mb-3 text-3xl font-semibold text-black">
                   {advert?.price} NOK
                 </p>
-                <Button text="Lei ut" color={ColorOptions.black} />
+                <Button
+                  text="Lei ut"
+                  color={ColorOptions.black}
+                  onClick={() =>
+                    void router.push(
+                      id ? `/annonser/lei-ut/${id as string}/` : "/"
+                    )
+                  }
+                />
               </div>
               <div className="flex h-[6rem] w-[16rem] flex-row items-center gap-3 rounded-md bg-gray-100 p-4">
                 <div className="h-[2.5rem] w-[2.5rem] rounded-full bg-black"></div>
