@@ -44,20 +44,21 @@ model Session {
 }
 
 model User {
-  id            String    @id @default(cuid())
-  name          String?
-  email         String?   @unique
-  emailVerified DateTime?
-  image         String?
-  phone         String?
-  address       String?
-  city          String?
-  totalRatingpoints Int @default(0)
-  totalRatings Int @default(0)
-  accounts      Account[]
-  sessions      Session[]
-  adverts       Advert[]
-  bookings      Booking[]
+  id                String      @id @default(cuid())
+  name              String?
+  email             String?     @unique
+  emailVerified     DateTime?
+  image             String?
+  phone             String?
+  address           String?
+  city              String?
+  totalRatingpoints Int         @default(0)
+  totalRatings      Int         @default(0)
+  accounts          Account[]
+  sessions          Session[]
+  adverts           Advert[]
+  bookings          Booking[]
+  FavoritedAdverts  Favorited[]
 }
 
 model Advert {
@@ -73,6 +74,16 @@ model Advert {
   SubCategory     SubCategory? @relation(fields: [subCategoryName], references: [name])
   subCategoryName String?
   bookings        Booking[]
+  FavoritedBy     Favorited[]
+}
+
+model Favorited {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  advert    Advert   @relation(fields: [advertId], references: [id], onDelete: Cascade)
+  advertId  String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
 }
 
 model VerificationToken {

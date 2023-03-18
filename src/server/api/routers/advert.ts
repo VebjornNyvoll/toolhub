@@ -7,6 +7,19 @@ export const advertRouter = createTRPCRouter({
   getAll: publicProcedure.query(({ ctx }) => {
     return ctx.prisma.advert.findMany();
   }),
+  getByIds: publicProcedure.input(
+    z.object({
+      ids: z.array(z.string()),
+    })
+  ).query(({ ctx, input }) => {
+    return ctx.prisma.advert.findMany({
+      where: {
+        id: {
+          in: input.ids,
+        },
+      },
+    });
+  }),
   getOne: publicProcedure
     .input(
       z.object({
