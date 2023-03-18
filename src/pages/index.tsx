@@ -12,6 +12,8 @@ import { api } from "../utils/api";
 
 import router from "next/router";
 
+import Image from "next/image";
+
 const Home: NextPage = () => {
   return (
     <>
@@ -66,9 +68,27 @@ const Home: NextPage = () => {
           >
             <path
               d="M0 403.5C0 180.653 180.653 0 403.5 0C626.347 0 807 180.653 807 403.5V673H0V403.5Z"
-              fill="#047857"
+              fill="transparent"
             />
           </svg>
+          <Image
+            src="/images/woman_painting_wall.webp"
+            width="350"
+            height="350"
+            className="animate-hovering-medium absolute bottom-[8rem] rounded-md shadow-md"
+          />
+          <Image
+            src="/images/kid_with_shovel.jpeg"
+            width="300"
+            height="300"
+            className="animate-hovering-fast absolute bottom-[26rem] right-[28.5rem] rounded-md shadow-md"
+          />
+          <Image
+            src="/images/man_with_planks.jpg"
+            width="400"
+            height="400"
+            className="animate-hovering-slow absolute bottom-[14rem] right-[0rem] rounded-md shadow-md"
+          />
         </div>
       </main>
     </>
