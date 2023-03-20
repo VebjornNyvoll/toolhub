@@ -20,7 +20,6 @@ const Home: NextPage = () => {
     const target = e.target as typeof e.target & {
       search: { value: string };
     };
-    // console.log(target.search.value);
     router.push({pathname: "/annonser", query: {searchInput: target.search.value}});
   };
   return (
@@ -49,7 +48,7 @@ const Home: NextPage = () => {
             <Button
               color={ColorOptions.white}
               icon={IconOptions.QueueList}
-              onClick={() => void router.push({pathname: "/annonser", query: {categoryName: "alle"}})} // Sender "" for å få alle annonser
+              onClick={() => void router.push({pathname: "/annonser", query: {categoryName: "alle"}})} // Sender "alle" for å få alle annonser
               text="Alle verktøy"
               square={true}
             />

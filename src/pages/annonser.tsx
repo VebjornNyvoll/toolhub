@@ -6,6 +6,7 @@ import Head from "next/head";
 import { api } from "../utils/api";
 import { useRouter } from "next/router";
 import { Searchbar } from "../components/searchbar/Searchbar";
+import { string } from "zod";
 
 const ToolFeed: NextPage = () => {
   const router = useRouter();
@@ -14,23 +15,26 @@ const ToolFeed: NextPage = () => {
     selectedCategory = "";
   }
 
-  let foundText = "Fant {adsByFilter?.length} resultater med valgte filtre";
-
    //importere liste med kategorier som vi kan iterere gjennom til knappene 
-  let { data: adsByFilter } = api.advertisement.getManyByCategory.useQuery({categoryName: selectedCategory}).filter((ad) => ad.availability);
-  let advertisements = api.advertisement.getAll.useQuery().data?.filter((ad) => ad.availability);
+  // let adsByFilter = api.advertisement.getManyByCategory.useQuery({categoryName: selectedCategory}).data?.filter((ad) => ad.availability) || [];
+  let adsByFilter = api.advertisement.getManyByCategory.useQuery({categoryName: selectedCategory}).data || [];
+  // let advertisements = api.advertisement.getAll.useQuery().data?.filter((ad) => ad.availability) || [];
+  let advertisements = api.advertisement.getAll.useQuery().data || [];
+  let foundText = "Fant " + adsByFilter.length + " resultater med valgte filtre";
 
   // Dersom brukeren har trykket på knappen "alle", skal alle annonser vises
   if (selectedCategory === "alle"){
     adsByFilter = advertisements;
+    foundText = "Viser alle tilgjengelige annonser"
   } 
   // Ved bruk av søkefeltet settes selectedCategory til "" og vi må sjekke om det er noen annonser som matcher søket
   else if (selectedCategory === ""){
-    adsByFilter = api.advertisement.getManyBySearch.useQuery({searchInput: router.query.searchInput as string}).data;
+    // adsByFilter = api.advertisement.getManyBySearch.useQuery({searchInput: router.query.searchInput as string}).data?.filter((ad) => ad.availability) || [];
+    adsByFilter = api.advertisement.getManyBySearch.useQuery({searchInput: router.query.searchInput as string}).data || [];
     // Dersom det ikke er noen annonser som matcher søket, skal alle annonser vises
-    if (adsByFilter?.length === 0 || adsByFilter === undefined){
+    if (adsByFilter.length === 0 || adsByFilter === undefined){
       adsByFilter = advertisements;
-      foundText = "Fant ingen annonser innenfor søket, viser alle annonser";
+      foundText = "Fant ingen annonser innenfor søket, viser alle tilgjengelige annonser";
     };
   };
 
