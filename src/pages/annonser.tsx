@@ -9,11 +9,7 @@ import { Searchbar } from "../components/searchbar/Searchbar";
 import { string } from "zod";
 
 const ToolFeed: NextPage = () => {
-  const router = useRouter();
-  let selectedCategory = router.query.categoryName as string;
-  if(!selectedCategory){
-    selectedCategory = "";
-  }
+  const { data: advertisements } = api.advertisement.getAll.useQuery();
 
    //importere liste med kategorier som vi kan iterere gjennom til knappene 
   let adsByFilter = api.advertisement.getManyByCategory.useQuery({categoryName: selectedCategory}).data || [];
@@ -47,15 +43,16 @@ const ToolFeed: NextPage = () => {
       </Head>
       <main className="flex min-h-screen flex-col bg-gray-100">
         <Navbar />
-        <section className="mt-40 flex flex-col px-[120px]">
+        <section className="mt-40 flex flex-col gap-5 px-[120px]">
           <p className="font-futura text-2xl">
             Se gjennom <span className="text-emerald-700">alle verktøy</span>
           </p>
-          <p className="font-futura text-md mt-10 text-gray-400">
-            {foundText}
+          <Searchbar />
+          <p className="font-futura text-md text-gray-400">
+            Fant {advertisements?.length} resultater med valgte filtre
           </p>
           <div className="mt-5 flex max-w-full flex-row flex-wrap gap-[0.2rem]">
-            {adsByFilter?.map((ad) => (
+            {advertisements?.map((ad) => (
               <Ad key={ad.id} title={ad.title} price={ad.price} id={ad.id} />
             ))}
           </div>

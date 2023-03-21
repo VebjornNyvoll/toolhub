@@ -1,7 +1,9 @@
 import { createTRPCRouter } from "./trpc";
 import { advertRouter } from "./routers/advert";
 import { profileRouter } from "./routers/profile";
-
+import { bookingRouter } from "./routers/booking"
+import { favoriteRouter } from "./routers/favorite"
+ 
 /**
  * This is the primary router for your server.
  *
@@ -10,6 +12,8 @@ import { profileRouter } from "./routers/profile";
 export const appRouter = createTRPCRouter({
   advertisement: advertRouter,
   profile: profileRouter,
+  booking: bookingRouter,
+  favorite: favoriteRouter
 });
 
 

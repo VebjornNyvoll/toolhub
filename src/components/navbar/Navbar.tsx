@@ -24,9 +24,15 @@ const Navbar = () => {
         />
         <Button
           icon={IconOptions.Heart}
-          text={"Varslinger"}
+          text={"Favoritter"}
           color={ColorOptions.white}
-          onClick={() => void router.push("/")}
+          onClick={() => void router.push("/favoritter")}
+        />
+        <Button
+          icon={IconOptions.Archive}
+          text={"Dine annonser"}
+          color={ColorOptions.white}
+          onClick={() => void router.push("/egne_annonser")}
         />
         <Button
           icon={IconOptions.UserCircle}
