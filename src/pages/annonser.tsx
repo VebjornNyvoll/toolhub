@@ -9,6 +9,7 @@ import { Searchbar } from "../components/searchbar/Searchbar";
 import { string } from "zod";
 
 const ToolFeed: NextPage = () => {
+  
   const router = useRouter();
   let selectedCategory = router.query.categoryName as string;
   if(!selectedCategory){
