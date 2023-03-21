@@ -59,7 +59,7 @@ const NyAnnonse: NextPage = () => {
     let totalRatingsPoints = rating;
     let totalRatings = 1;
     let userid = "";
-    if (!user?.totalRatingpoints) {
+    if (user?.totalRatingpoints == null) {
       return null;
     } else {
       totalRatingsPoints += user.totalRatingpoints;
