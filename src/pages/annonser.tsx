@@ -20,17 +20,18 @@ const ToolFeed: NextPage = () => {
   let adsByFilter = api.advertisement.getManyByCategory.useQuery({categoryName: selectedCategory}).data || [];
   // let advertisements = api.advertisement.getAll.useQuery().data?.filter((ad) => ad.availability) || [];
   let advertisements = api.advertisement.getAll.useQuery().data || [];
-  let foundText = "Fant " + adsByFilter.length + " resultater med valgte filtre";
+  let foundText = "Viser annonser innenfor " + selectedCategory;
 
   // Dersom brukeren har trykket på knappen "alle", skal alle annonser vises
   if (selectedCategory === "alle"){
     adsByFilter = advertisements;
-    foundText = "Viser alle tilgjengelige annonser"
+    foundText = "Viser alle tilgjengelige annonser";
   } 
   // Ved bruk av søkefeltet settes selectedCategory til "" og vi må sjekke om det er noen annonser som matcher søket
   else if (selectedCategory === ""){
     // adsByFilter = api.advertisement.getManyBySearch.useQuery({searchInput: router.query.searchInput as string}).data?.filter((ad) => ad.availability) || [];
     adsByFilter = api.advertisement.getManyBySearch.useQuery({searchInput: router.query.searchInput as string}).data || [];
+    foundText = "Fant " + adsByFilter.length + " resultater med valgte filtre";
     // Dersom det ikke er noen annonser som matcher søket, skal alle annonser vises
     if (adsByFilter.length === 0 || adsByFilter === undefined){
       adsByFilter = advertisements;
