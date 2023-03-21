@@ -15,6 +15,7 @@ import Dialog from "./../../../components/dialogs/Dialog";
 import Container from "../../../components/annonse/Container";
 import Swiper from "../../../components/swiper/Swiper";
 import { PencilIcon } from "@heroicons/react/24/outline";
+import InputField from "../../../components/inputs/InputField";
 
 const NyAnnonse: NextPage = () => {
   const { data: sessionData } = useSession();
@@ -32,6 +33,44 @@ const NyAnnonse: NextPage = () => {
       enabled: !!id,
     }
   );
+
+  const { mutate: addRating } = api.profile.addRating.useMutation({
+    onSuccess: () => {
+      ctx.advertisement
+        .invalidate()
+        .then(() => {
+          console.log("success");
+          void router.push(`/`);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+  });
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const target = e.target as typeof e.target & {
+      rating: { value: string };
+    };
+    const rating: number = +target.rating.value;
+    let totalRatingsPoints = rating;
+    let totalRatings = 1;
+    let userid = "";
+    if (!user?.totalRatingpoints) {
+      return null;
+    } else {
+      totalRatingsPoints += user.totalRatingpoints;
+      totalRatings += user.totalRatings;
+      userid = user?.id;
+    }
+
+    addRating({
+      rating: totalRatingsPoints,
+      amountraters: totalRatings,
+      userid: userid,
+    });
+  };
 
   return (
     <>
@@ -51,6 +90,39 @@ const NyAnnonse: NextPage = () => {
             </div>
           </div>
           <p>{`Epost: ${user?.email ? user?.email : "Har ikke epost"}`}</p>
+          <p>
+            {user?.totalRatingpoints
+              ? (
+                  Math.round(
+                    (user.totalRatingpoints / user.totalRatings) * 100
+                  ) / 100
+                ).toString() +
+                "/6 (" +
+                user.totalRatings.toString() +
+                " rangeringer)"
+              : "Ikke fått noen ratinger"}
+          </p>
+          <form
+            title="Gi rating"
+            onSubmit={(e) => handleSubmit(e)}
+            className="flex w-full flex-col gap-8"
+          >
+            <div className="flex w-full flex-row gap-8">
+              <InputField
+                label=""
+                type="number"
+                min={1}
+                max={6}
+                name="rating"
+                placeholder="1-6"
+              />
+              <input
+                type="submit"
+                value="Gi rating"
+                className="w-full cursor-pointer rounded-md bg-black px-4 py-2 text-white hover:bg-emerald-700"
+              />
+            </div>
+          </form>
         </div>
       </main>
     </>

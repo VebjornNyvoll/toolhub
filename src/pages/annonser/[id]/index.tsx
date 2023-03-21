@@ -4,7 +4,10 @@ import Head from "next/head";
 import Link from "next/link";
 import Navbar from "../../../components/navbar/Navbar";
 import { signIn, signOut, useSession } from "next-auth/react";
-import Button, { ColorOptions } from "../../../components/buttons/Button";
+import Button, {
+  ColorOptions,
+  IconOptions,
+} from "../../../components/buttons/Button";
 import { useRouter } from "next/router";
 
 import { api } from "../../../utils/api";
@@ -14,6 +17,7 @@ import { Listbox, Transition } from "@headlessui/react";
 import Dialog from "./../../../components/dialogs/Dialog";
 import Container from "../../../components/annonse/Container";
 import Swiper from "../../../components/swiper/Swiper";
+import { HeartIcon } from "@heroicons/react/24/outline";
 
 const NyAnnonse: NextPage = () => {
   const { data: sessionData } = useSession();
@@ -33,6 +37,15 @@ const NyAnnonse: NextPage = () => {
     }
   );
 
+  const { data: favoritedAd } = api.favorite.getFavoritedAd.useQuery(
+    {
+      advertId: id as string,
+    },
+    {
+      enabled: !!id,
+    }
+  );
+
   const { data: author } = api.profile.getUser.useQuery(
     {
       id: advert?.authorId as string,
@@ -41,6 +54,56 @@ const NyAnnonse: NextPage = () => {
       enabled: !!advert?.authorId,
     }
   );
+
+  const { mutate: favoriteAdvert } = api.favorite.favoriteAd.useMutation({
+    onSuccess: (data) => {
+      ctx.favorite
+        .invalidate()
+        .then(() => {
+          setFavorited(true);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+  });
+
+  const { mutate: unfavoriteAdvert } = api.favorite.unfavoriteAd.useMutation({
+    onSuccess: (data) => {
+      ctx.favorite
+        .invalidate()
+        .then(() => {
+          setFavorited(false);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+  });
+
+  const handleFavorite = () => {
+    if (!favorited) {
+      favoriteAdvert({
+        advertId: id as string,
+      });
+    } else {
+      unfavoriteAdvert({
+        advertId: id as string,
+      });
+    }
+  };
+
+  useEffect(() => {
+    if (favoritedAd) {
+      if (favoritedAd.length > 0) {
+        setFavorited(true);
+      } else {
+        setFavorited(false);
+      }
+    }
+  }, [favoritedAd]);
+
+  const [favorited, setFavorited] = useState<undefined | boolean>(undefined);
 
   return (
     <>
@@ -52,17 +115,45 @@ const NyAnnonse: NextPage = () => {
       <main className="mx-[120px] flex h-screen flex-col items-center justify-end overflow-hidden bg-gray-100">
         <Navbar />
         <Container title={advert ? advert.title : "Fant ikke annonse"}>
+          {favorited != undefined ? (
+            <div className="mt-[-3.5rem] mb-8 flex flex-row justify-center self-end">
+              <p className="mr-2 mt-1">Legg til som favoritt</p>
+              {favorited ? (
+                <div
+                  className="gap-2 rounded-md bg-rose-500 p-2 text-white hover:cursor-pointer "
+                  onClick={() => handleFavorite()}
+                >
+                  <HeartIcon className="h-5 w-5" strokeWidth={2} />
+                </div>
+              ) : (
+                <div
+                  className="gap-2 rounded-md bg-gray-100 p-2 text-rose-500 hover:cursor-pointer hover:text-rose-500"
+                  onClick={() => handleFavorite()}
+                >
+                  <HeartIcon className="h-5 w-5" strokeWidth={2} />
+                </div>
+              )}
+            </div>
+          ) : null}
           <div className="flex w-full flex-row gap-4">
             <Swiper></Swiper>
             <div className="flex flex-col gap-3">
               <div className="flex h-[10rem] w-[16rem] flex-col gap-1 rounded-md bg-gray-100 p-4">
-                <p className="font-semibold text-emerald-700">
-                  {advert?.subCategoryName}
+                <p className="flex flex-row justify-between font-semibold text-emerald-700">
+                  {advert?.subCategoryName}{" "}
                 </p>
                 <p className="mb-3 text-3xl font-semibold text-black">
                   {advert?.price} NOK
                 </p>
-                <Button text="Lei ut" color={ColorOptions.black} />
+                <Button
+                  text="Lei ut"
+                  color={ColorOptions.black}
+                  onClick={() =>
+                    void router.push(
+                      id ? `/annonser/lei-ut/${id as string}/` : "/"
+                    )
+                  }
+                />
               </div>
               <div className="flex h-[6rem] w-[16rem] flex-row items-center gap-3 rounded-md bg-gray-100 p-4">
                 <div className="h-[2.5rem] w-[2.5rem] rounded-full bg-black"></div>
@@ -76,6 +167,19 @@ const NyAnnonse: NextPage = () => {
                     {author?.name}
                   </p>
                   <p>{author?.phone ? author.phone : "Mangler tlf"}</p>
+                  <p>
+                    {author?.totalRatingpoints
+                      ? (
+                          Math.round(
+                            (author.totalRatingpoints / author.totalRatings) *
+                              100
+                          ) / 100
+                        ).toString() +
+                        "/6 (" +
+                        author.totalRatings.toString() +
+                        " rangeringer)"
+                      : "Ikke fått noen ratinger"}
+                  </p>
                 </div>
               </div>
             </div>

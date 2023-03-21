@@ -8,6 +8,8 @@ interface InputFieldProps {
   className?: string;
   disabled?: boolean;
   type?: string;
+  min?: number;
+  max?: number;
 }
 
 const InputField = ({
@@ -17,6 +19,8 @@ const InputField = ({
   type,
   defaultValue,
   placeholder,
+  min,
+  max,
 }: InputFieldProps) => {
   return (
     <label
@@ -28,6 +32,8 @@ const InputField = ({
         defaultValue={defaultValue}
         placeholder={placeholder}
         name={name}
+        min={min}
+        max={max}
         className="rounded-full border-2 border-black bg-gray-100 p-2 px-4"
       />
     </label>

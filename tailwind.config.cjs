@@ -23,9 +23,20 @@ module.exports = {
                 opacity: '1',
             },
         },
+        'hovering-up-and-down': {
+            '0%, 100%': {
+                transform: 'translateY(0%)',
+            },
+            '50%': {
+                transform: 'translateY(-5%)',
+            },
+        }
     },
     animation: {
         'from-bottom': 'moving-line ease .6s forwards',
+        'hovering-slow': 'hovering-up-and-down ease-in-out 10s infinite',
+        'hovering-medium': 'hovering-up-and-down ease-in-out 8s infinite',
+        'hovering-fast': 'hovering-up-and-down ease-in-out 6s infinite',
     },
     },
   },

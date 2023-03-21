@@ -2,7 +2,8 @@ import { type AppType } from "next/app";
 import { type Session } from "next-auth";
 import { SessionProvider } from "next-auth/react";
 import localFont from "@next/font/local";
-
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { api } from "../utils/api";
 
 import "../styles/globals.css";
@@ -130,11 +131,13 @@ const MyApp: AppType<{ session: Session | null }> = ({
 }) => {
   return (
     <SessionProvider session={session}>
-      <main className={`${Sofia.variable} font-sofia`}>
-        <main className={`${Warming.variable} bg-gray-100 font-warming`}>
-          <Component {...pageProps} />
+      <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <main className={`${Sofia.variable} font-sofia`}>
+          <main className={`${Warming.variable} bg-gray-100 font-warming`}>
+            <Component {...pageProps} />
+          </main>
         </main>
-      </main>
+      </LocalizationProvider>
     </SessionProvider>
   );
 };
