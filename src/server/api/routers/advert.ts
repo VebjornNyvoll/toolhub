@@ -7,19 +7,21 @@ export const advertRouter = createTRPCRouter({
   getAll: publicProcedure.query(({ ctx }) => {
     return ctx.prisma.advert.findMany();
   }),
-  getByIds: publicProcedure.input(
-    z.object({
-      ids: z.array(z.string()),
-    })
-  ).query(({ ctx, input }) => {
-    return ctx.prisma.advert.findMany({
-      where: {
-        id: {
-          in: input.ids,
+  getByIds: publicProcedure
+    .input(
+      z.object({
+        ids: z.array(z.string()),
+      })
+    )
+    .query(({ ctx, input }) => {
+      return ctx.prisma.advert.findMany({
+        where: {
+          id: {
+            in: input.ids,
+          },
         },
-      },
-    });
-  }),
+      });
+    }),
   getOne: publicProcedure
     .input(
       z.object({
@@ -33,7 +35,35 @@ export const advertRouter = createTRPCRouter({
         },
       });
     }),
-  avability: protectedProcedure
+  getManyByCategory: publicProcedure
+    .input(
+      z.object({
+        categoryName: z.string(),
+      })
+    )
+    .query(({ ctx, input }) => {
+      return ctx.prisma.advert.findMany({
+        where: {
+          categoryName: input.categoryName,
+        },
+      });
+    }),
+  getManyBySearch: publicProcedure
+    .input(
+      z.object({
+        searchInput: z.string(),
+      })
+    )
+    .query(({ ctx, input }) => {
+      return ctx.prisma.advert.findMany({
+        where: {
+          title: {
+            contains: input.searchInput,
+          },
+        },
+      });
+    }),
+  availability: protectedProcedure
     .input(
       z.object({
         advertId: z.string(),
