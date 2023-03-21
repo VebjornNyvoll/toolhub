@@ -120,14 +120,14 @@ const NyAnnonse: NextPage = () => {
               <p className="mr-2 mt-1">Legg til som favoritt</p>
               {favorited ? (
                 <div
-                  className="gap-2 rounded-md bg-rose-500 p-2 text-white hover:bg-white hover:text-rose-500"
+                  className="gap-2 rounded-md bg-rose-500 p-2 text-white hover:cursor-pointer "
                   onClick={() => handleFavorite()}
                 >
                   <HeartIcon className="h-5 w-5" strokeWidth={2} />
                 </div>
               ) : (
                 <div
-                  className="gap-2 rounded-md bg-gray-100 p-2 text-rose-500 hover:bg-rose-500 hover:text-white"
+                  className="gap-2 rounded-md bg-gray-100 p-2 text-rose-500 hover:cursor-pointer hover:text-rose-500"
                   onClick={() => handleFavorite()}
                 >
                   <HeartIcon className="h-5 w-5" strokeWidth={2} />
