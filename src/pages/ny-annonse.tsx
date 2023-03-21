@@ -8,6 +8,7 @@ import InputField from "../components/inputs/InputField";
 import InputBox from "../components/inputs/InputBox";
 import Button, { ColorOptions } from "../components/buttons/Button";
 import { useRouter } from "next/router";
+import axios from "axios";
 
 import { api } from "../utils/api";
 import { contextProps } from "@trpc/react-query/shared";
@@ -28,6 +29,10 @@ const NyAnnonse: NextPage = () => {
   useEffect(() => {
     setSelectedSubCategory(selectedCategory?.subcategories[0]);
   }, [selectedCategory, setSelectedCategory]);
+
+  const [uploading, setUploading] = useState(false);
+  const [selectedImage, setSelectedImage] = useState("");
+  const [selectedFile, setSelectedFile] = useState<File>();
 
   const router = useRouter();
 
@@ -51,17 +56,35 @@ const NyAnnonse: NextPage = () => {
       title: { value: string };
       price: { value: string };
       description: { value: string };
+      image: { value: string };
     };
     const tittel = target.title.value;
     const pris: number = +target.price.value;
     const description = target.description.value;
+    const image = target.image.value.split("\\")[2];
     createAdvert({
       title: tittel,
       price: pris,
       description: description,
       subCategoryName: selectedSubCategory ? selectedSubCategory.name : "",
+      image: image ? image : "",
     });
+    handleUpload();
   };
+
+  const handleUpload = async () => {
+    setUploading(true);
+      try {
+        if (!selectedFile) return;
+        const formData = new FormData();
+        formData.append("myImage", selectedFile);
+        const {data} = await axios.post("/api/image", formData);
+        console.log(data);
+      } catch(error: any) {
+        console.log(error.response?.data);
+      }
+    setUploading(false);
+  }
 
   const userId = api.profile.getLoggedInUser.useQuery().data?.id;
 
@@ -164,6 +187,17 @@ const NyAnnonse: NextPage = () => {
                           </Listbox.Options>
                         </Transition>
                       </Listbox>
+                    </div>
+                    <div className="h-30">
+                        <p>Last opp bilde</p>
+                        <input type="file" name="image"
+                          onChange={({ target }) => {
+                            if (target.files) {
+                              const file = target.files[0];
+                              setSelectedFile(file);
+                            }
+                          }}
+                        />
                     </div>
                   </div>
                   <div className="flex h-[18rem] w-full flex-row gap-12 ">

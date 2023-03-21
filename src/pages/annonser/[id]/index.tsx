@@ -18,6 +18,7 @@ import Dialog from "./../../../components/dialogs/Dialog";
 import Container from "../../../components/annonse/Container";
 import Swiper from "../../../components/swiper/Swiper";
 import { HeartIcon } from "@heroicons/react/24/outline";
+import Image from "next/image";
 
 const NyAnnonse: NextPage = () => {
   const { data: sessionData } = useSession();
@@ -136,7 +137,14 @@ const NyAnnonse: NextPage = () => {
             </div>
           ) : null}
           <div className="flex w-full flex-row gap-4">
-            <Swiper></Swiper>
+            <div className="overflow-hidden flex flex-col max-h-72">
+              <Image
+                src={"/images/" + advert?.image}
+                width="400"
+                height="300" 
+                alt={""}              
+                />
+            </div>
             <div className="flex flex-col gap-3">
               <div className="flex h-[10rem] w-[16rem] flex-col gap-1 rounded-md bg-gray-100 p-4">
                 <p className="flex flex-row justify-between font-semibold text-emerald-700">
