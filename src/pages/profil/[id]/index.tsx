@@ -49,7 +49,9 @@ const NyAnnonse: NextPage = () => {
   });
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    console.log("Eyyo");
     e.preventDefault();
+    
     const target = e.target as typeof e.target & {
       rating: { value: string };
     };
@@ -64,6 +66,7 @@ const NyAnnonse: NextPage = () => {
       totalRatings += user.totalRatings;
       userid = user?.id;
     }
+    
 
     addRating({
       rating: totalRatingsPoints,
