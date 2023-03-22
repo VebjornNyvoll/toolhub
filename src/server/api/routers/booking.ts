@@ -22,15 +22,64 @@ export const bookingRouter = createTRPCRouter({
     z.object({
       advertId: z.string(),
     })
-  ).query(({ ctx, input }) => {
+  ).query(({ ctx }) => {
     return ctx.prisma.booking.findMany({
       where: {
-        advertId: input.advertId,
+        OR: [
+          {
+            userId: ctx.session.user.id,
+          },
+          {
+            advert: {
+              authorId: ctx.session.user.id,
+            }
+          },
+        ]
       },
       select: {
+        advertId: true,
+        userId: true,
+        user: true,
         date: true,
+        advert: {
+          select: {
+            authorId: true,
+            title: true,
+            subCategoryName: true,
+          }
+        }
       }
     });
   }
   ),
+  getYourBookings: protectedProcedure.query(({ ctx }) => {
+    return ctx.prisma.booking.findMany({
+      where: {
+        OR: [
+          {
+            userId: ctx.session.user.id,
+          },
+          {
+            advert: {
+              authorId: ctx.session.user.id,
+            }
+          },
+        ]
+      },
+      select: {
+        advertId: true,
+        userId: true,
+        user: true,
+        date: true,
+        advert: {
+          select: {
+            authorId: true,
+            author: true,
+            title: true,
+            subCategoryName: true,
+          }
+        }
+      }
+    });
+  }),
 });
