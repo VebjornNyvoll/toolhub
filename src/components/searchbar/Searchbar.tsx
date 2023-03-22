@@ -15,6 +15,7 @@ const Searchbar = () => {
         className="w-full outline-none"
         type="text"
         placeholder="Hvilke verktøy ser du etter?"
+        name="search"
         onChange={handleChange}
         value={searchInput}
       />

@@ -44,7 +44,9 @@ export const advertRouter = createTRPCRouter({
     .query(({ ctx, input }) => {
       return ctx.prisma.advert.findMany({
         where: {
-          categoryName: input.categoryName,
+          SubCategory: {
+            categoryName: input.categoryName,
+          }
         },
       });
     }),
