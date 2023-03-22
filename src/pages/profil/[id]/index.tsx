@@ -34,7 +34,15 @@ const NyAnnonse: NextPage = () => {
     }
   );
 
-  const { mutate: addRating } = api.profile.addRating.useMutation({
+  const ratings = api.rating.getRatings.useQuery({
+    id: user?.id as string,
+  });
+
+  const amountOfRatings = api.rating.getAmountOfRatings.useQuery({
+    id: user?.id as string,
+  })
+
+  const { mutate: addRating } = api.rating.rate.useMutation({
     onSuccess: () => {
       ctx.advertisement
         .invalidate()
@@ -49,31 +57,20 @@ const NyAnnonse: NextPage = () => {
   });
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    console.log("Eyyo");
     e.preventDefault();
     
     const target = e.target as typeof e.target & {
-      rating: { value: string };
+      rating: { value: number };
     };
-    console.log(target.rating.value);
-    const rating: number = +target.rating.value;
-    let totalRatingsPoints = rating;
-    let totalRatings = 1;
-    let userid = "";
-    if (user?.totalRatingpoints == null) {
-      return null;
-    } else {
-      totalRatingsPoints += user.totalRatingpoints;
-      totalRatings += user.totalRatings;
-      userid = user?.id;
+  
+    if(!user==null){
+      addRating({
+        rating: target.rating.value,
+        userRatedId: user.id,
+      });
     }
     
 
-    addRating({
-      rating: totalRatingsPoints,
-      amountraters: totalRatings,
-      userid: userid,
-    });
   };
 
   return (
@@ -95,16 +92,7 @@ const NyAnnonse: NextPage = () => {
           </div>
           <p>{`Epost: ${user?.email ? user?.email : "Har ikke epost"}`}</p>
           <p>
-            {user?.totalRatingpoints
-              ? (
-                  Math.round(
-                    (user.totalRatingpoints / user.totalRatings) * 100
-                  ) / 100
-                ).toString() +
-                "/5 (" +
-                user.totalRatings.toString() +
-                " rangeringer)"
-              : "Ikke fått noen ratinger"}
+              {"Antall vurderinger: " + {amountOfRatings}}
           </p>
           
           <form
@@ -116,7 +104,7 @@ const NyAnnonse: NextPage = () => {
               <Rating 
                 name="rating"
                 precision={0.5}
-                defaultValue={user?.totalRatingpoints ? user.totalRatingpoints / user.totalRatings : 0}
+                defaultValue={0}
                 ></Rating>
               <input
                 type="submit"

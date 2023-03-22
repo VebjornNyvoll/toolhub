@@ -35,34 +35,29 @@ export const ratingRouter = createTRPCRouter({
   //           }
   //         });
   //       }),
+  getRatings: protectedProcedure
+    .input(
+      z.object({
+        id: z.string(),
+      })
+    )
+    .query(({ ctx, input }) => {
+      return ctx.prisma.rating.findMany({
+        where: {
+          userRatedId: input.id,
+        }
+      });
+    }),
   getAmountOfRatings: publicProcedure
     .input(
       z.object({
         id: z.string(),
       })
     )
-    .mutation(({ ctx, input }) => {
+    .query(({ ctx, input }) => {
       return ctx.prisma.rating.count({
         where: {
           userRatedId: input.id,
-        }
-      });
-    }),
-  getTotalRatings: protectedProcedure
-    .input(
-      z.object({
-        id: z.string(),
-      })
-    )
-    .mutation(({ ctx, input }) => {
-      return ctx.prisma.user.findUnique({
-        where: {
-          id: input.id,
-        },
-        _sum: {
-          rating: {
-            rating: true,
-          }
         }
       });
     }),
