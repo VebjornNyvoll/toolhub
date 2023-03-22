@@ -4,7 +4,7 @@ import Head from "next/head";
 import Link from "next/link";
 import Navbar from "../../../components/navbar/Navbar";
 import { signIn, signOut, useSession } from "next-auth/react";
-import Button, { ColorOptions } from "../../../components/buttons/Button";
+import {Rating} from '@mui/material';
 import { useRouter } from "next/router";
 
 import { api } from "../../../utils/api";
@@ -55,6 +55,7 @@ const NyAnnonse: NextPage = () => {
     const target = e.target as typeof e.target & {
       rating: { value: string };
     };
+    console.log(target.rating.value);
     const rating: number = +target.rating.value;
     let totalRatingsPoints = rating;
     let totalRatings = 1;
@@ -100,29 +101,27 @@ const NyAnnonse: NextPage = () => {
                     (user.totalRatingpoints / user.totalRatings) * 100
                   ) / 100
                 ).toString() +
-                "/6 (" +
+                "/5 (" +
                 user.totalRatings.toString() +
                 " rangeringer)"
               : "Ikke fått noen ratinger"}
           </p>
+          
           <form
             title="Gi rating"
             onSubmit={(e) => handleSubmit(e)}
-            className="flex w-full flex-col gap-8"
+            className="flex w-full flex-col"
           >
-            <div className="flex w-full flex-row gap-8">
-              <InputField
-                label=""
-                type="number"
-                min={1}
-                max={6}
+            <div className="flex w-full flex-col items-center">
+              <Rating 
                 name="rating"
-                placeholder="1-6"
-              />
+                precision={0.5}
+                defaultValue={user?.totalRatingpoints ? user.totalRatingpoints / user.totalRatings : 0}
+                ></Rating>
               <input
                 type="submit"
                 value="Gi rating"
-                className="w-full cursor-pointer rounded-md bg-black px-4 py-2 text-white hover:bg-emerald-700"
+                className="cursor-pointer rounded-md bg-black px-4 py-2 text-white hover:bg-emerald-700"
               />
             </div>
           </form>

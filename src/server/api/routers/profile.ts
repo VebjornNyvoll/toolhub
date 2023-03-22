@@ -35,21 +35,16 @@ export const profileRouter = createTRPCRouter({
         },
       });
     }),
-  addRating: protectedProcedure
-    .input(
-      z.object({
-        rating: z.number(),
-        amountraters: z.number(),
-        userid: z.string(),
-      })
-    )
-    .mutation(({ ctx, input }) => {
-      return ctx.prisma.user.update({
-        where: { id: input.userid },
-        data: {
-          totalRatings: input.amountraters,
-          totalRatingpoints: input.rating,
-        },
-      });
-    }),
+  // getRating: publicProcedure
+  //   .input(
+  //     z.object({
+  //       id: z.string(),
+  //     })
+  //   )
+  //   .mutation(({ ctx, input }) => {
+  //     return ctx.prisma.user.findUnique({
+  //       where: { id: input.id },
+          
+  //     });
+  //   }),
 });

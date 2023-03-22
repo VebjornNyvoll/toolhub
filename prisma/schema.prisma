@@ -43,22 +43,33 @@ model Session {
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
+model Rating {
+  id           String @id @default(cuid())
+  userRated    User   @relation("userRated", fields: [userRatedId], references: [id], onDelete: Cascade)
+  userRatedId  String
+  userRating   User   @relation("userRating", fields: [userRatingId], references: [id], onDelete: Cascade)
+  userRatingId String
+  rating       Int    @default(0)
+
+  @@unique([userRatedId, userRatingId])
+}
+
 model User {
-  id                String      @id @default(cuid())
-  name              String?
-  email             String?     @unique
-  emailVerified     DateTime?
-  image             String?
-  phone             String?
-  address           String?
-  city              String?
-  totalRatingpoints Int         @default(0)
-  totalRatings      Int         @default(0)
-  accounts          Account[]
-  sessions          Session[]
-  adverts           Advert[]
-  bookings          Booking[]
-  FavoritedAdverts  Favorited[]
+  id               String      @id @default(cuid())
+  name             String?
+  email            String?     @unique
+  emailVerified    DateTime?
+  image            String?
+  phone            String?
+  address          String?
+  city             String?
+  ratingsReceived  Rating[]    @relation("userRated")
+  ratingsGiven     Rating[]    @relation("userRating")
+  accounts         Account[]
+  sessions         Session[]
+  adverts          Advert[]
+  bookings         Booking[]
+  FavoritedAdverts Favorited[]
 }
 
 model Advert {
@@ -66,7 +77,6 @@ model Advert {
   type            String       @default("rent") // sell, rent
   title           String
   description     String
-  image           String
   price           Int
   createdAt       DateTime     @default(now())
   updatedAt       DateTime     @updatedAt
