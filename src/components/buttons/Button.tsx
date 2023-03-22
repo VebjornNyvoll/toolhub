@@ -8,6 +8,7 @@ import {
   BoltIcon,
   QueueListIcon,
   ArchiveBoxIcon,
+  CalendarIcon,
 } from "@heroicons/react/24/outline";
 
 export enum IconOptions {
@@ -18,6 +19,7 @@ export enum IconOptions {
   Bolt = "Bolt",
   QueueList = "QueueList",
   Archive = "Archive",
+  Calendar = "Calendar",
 }
 
 export enum ColorOptions {
@@ -58,7 +60,7 @@ const Button: React.FC<ButtonProps> = ({
       className={`font-regular hover:shadow-m } z-10 flex flex-row items-center justify-center
        ${
          !square ? "rounded-full py-[0.4rem]" : "rounded-md py-[0.7rem]"
-       } px-[1.1rem] shadow-sm transition-all
+       } px-[1rem] shadow-sm transition-all
        hover:translate-y-[-2px] ${flex ? "w-full" : ""} ${
         ColorCombinations.text[color]
           ? ColorCombinations.text[color]
@@ -73,19 +75,22 @@ const Button: React.FC<ButtonProps> = ({
         <HeartIcon className="h-[26px] w-[26px]" strokeWidth={1.5} />
       ) : null}
       {icon === IconOptions.Plus ? (
-        <PlusIcon className="h-7 w-7" strokeWidth={1.5} />
+        <PlusIcon className="h-6 w-6" strokeWidth={1.5} />
       ) : null}
       {icon === IconOptions.Wrench ? (
-        <WrenchScrewdriverIcon className="h-7 w-7" strokeWidth={1.5} />
+        <WrenchScrewdriverIcon className="h-6 w-6" strokeWidth={1.5} />
       ) : null}
       {icon === IconOptions.Bolt ? (
-        <BoltIcon className="h-7 w-7" strokeWidth={1.5} />
+        <BoltIcon className="h-6 w-6" strokeWidth={1.5} />
       ) : null}
       {icon === IconOptions.QueueList ? (
-        <QueueListIcon className="h-7 w-7" strokeWidth={1.5} />
+        <QueueListIcon className="h-6 w-6" strokeWidth={1.5} />
       ) : null}
       {icon === IconOptions.Archive ? (
-        <ArchiveBoxIcon className="h-7 w-7" strokeWidth={1.5} />
+        <ArchiveBoxIcon className="mb-[3px] h-6 w-6" strokeWidth={1.5} />
+      ) : null}
+      {icon === IconOptions.Calendar ? (
+        <CalendarIcon className="mb-[4px] h-6 w-6" strokeWidth={1.5} />
       ) : null}
       {text ? <p className="ml-2">{text}</p> : null}
     </button>

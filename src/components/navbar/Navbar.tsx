@@ -29,6 +29,12 @@ const Navbar = () => {
           onClick={() => void router.push("/favoritter")}
         />
         <Button
+          icon={IconOptions.Calendar}
+          text={"Bookinger"}
+          color={ColorOptions.white}
+          onClick={() => void router.push("/bookinger")}
+        />
+        <Button
           icon={IconOptions.Archive}
           text={"Dine annonser"}
           color={ColorOptions.white}

@@ -154,12 +154,18 @@ const NyAnnonse: NextPage = () => {
                   {advert?.price} NOK
                 </p>
                 <Button
-                  text="Lei ut"
+                  text={
+                    sessionData?.user.id != advert?.authorId
+                      ? "Lei ut"
+                      : "Din annonse"
+                  }
                   color={ColorOptions.black}
                   onClick={() =>
-                    void router.push(
-                      id ? `/annonser/lei-ut/${id as string}/` : "/"
-                    )
+                    sessionData?.user.id != advert?.authorId
+                      ? void router.push(
+                          id ? `/annonser/lei-ut/${id as string}/` : "/"
+                        )
+                      : console.log("Can't rent your own ad")
                   }
                 />
               </div>
