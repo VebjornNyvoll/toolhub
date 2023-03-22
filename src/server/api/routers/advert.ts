@@ -85,6 +85,7 @@ export const advertRouter = createTRPCRouter({
         description: z.string(),
         price: z.number(),
         subCategoryName: z.string(),
+        image: z.string(),
       })
     )
     .mutation(({ ctx, input }) => {
@@ -95,6 +96,7 @@ export const advertRouter = createTRPCRouter({
           price: input.price,
           authorId: ctx.session.user.id,
           subCategoryName: input.subCategoryName,
+          image: input.image,
         },
       });
     }),

@@ -2,14 +2,16 @@
 import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
 import { api } from "../../utils/api";
+import Image from "next/image";
 
 interface AdProps {
   title: string;
   price: number;
   id: string;
+  imgSource: string;
 }
 
-const Ad = ({ title, price, id }: AdProps) => {
+const Ad = ({ title, price, id, imgSource }: AdProps) => {
   const router = useRouter();
 
   const { data: bookedDates } = api.booking.getBookedDates.useQuery(
@@ -51,7 +53,13 @@ const Ad = ({ title, price, id }: AdProps) => {
           Ledig i dag
         </div>
       ) : null}
-      <div className="h-48 w-48 rounded-2xl bg-white shadow-sm"></div>
+      <div className="h-48 w-48 rounded-2xl bg-white shadow-sm overflow-hidden">
+      <Image
+            src={"/images/" + imgSource}
+            width="200"
+            height="200"
+          />
+      </div>
       <p className="text-md ml-4 mt-3 w-48">{title}</p>
       <p className="ml-4 w-48 text-sm text-gray-400">{price}</p>
     </div>

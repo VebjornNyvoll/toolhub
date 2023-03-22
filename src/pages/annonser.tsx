@@ -74,7 +74,7 @@ const ToolFeed: NextPage = () => {
           <p className="font-futura text-md text-gray-400">{amountOfAdsText}</p>
           <div className="mt-5 flex max-w-full flex-row flex-wrap gap-[0.2rem]">
             {adsByFilter?.map((ad) => (
-              <Ad key={ad.id} title={ad.title} price={ad.price} id={ad.id} />
+              <Ad key={ad.id} title={ad.title} price={ad.price} id={ad.id} imgSource={ad.image}/>
             ))}
           </div>
         </section>
