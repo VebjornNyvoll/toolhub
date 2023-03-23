@@ -12,6 +12,8 @@ const ToolFeed: NextPage = () => {
 
   const [favoritedIds, setFavoritedIds] = useState<string[]>([]);
 
+  const userId = api.profile.getLoggedInUser.useQuery().data?.id;
+
   useEffect(() => {
     if (favorites) {
       setFavoritedIds(favorites.map((favorite) => favorite.advertId));
@@ -33,13 +35,20 @@ const ToolFeed: NextPage = () => {
       </Head>
       <main className="flex min-h-screen flex-col bg-gray-100">
         <Navbar />
-        <section className="mt-40 flex flex-col gap-5 px-[120px]">
+        <section className="mt-48 flex flex-col px-[120px]">
+        {userId === undefined ? (
+            <p className="font-futura text-center text-2xl">
+              Du må være logget inn for å se dine favoritter.
+            </p>
+          ) : (
+            <>
           <p className="font-futura text-2xl">
             Se gjennom <span className="text-rose-500">dine favoritter</span>
           </p>
           <p className="font-futura text-md text-gray-400">
             Du har favorisert {advertisements?.length} annonser!
           </p>
+          </>)}
           <div className="mt-5 flex max-w-full flex-row flex-wrap gap-[0.2rem]">
             {advertisements?.map((ad) => (
               <Ad key={ad.id} title={ad.title} price={ad.price} id={ad.id} imgSource={ad.image}  />
