@@ -15,6 +15,13 @@ import router from "next/router";
 import Image from "next/image";
 
 const Home: NextPage = () => {
+  const handleSearchSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const target = e.target as typeof e.target & {
+      search: { value: string };
+    };
+    router.push({pathname: "/annonser", query: {searchInput: target.search.value}});
+  };
   return (
     <>
       <Head>
@@ -29,24 +36,30 @@ const Home: NextPage = () => {
           <p className="max-w-xs font-sofia text-8xl font-bold text-emerald-700">
             LEI UTSTYR
           </p>
-          <Searchbar />
+          <form onSubmit={handleSearchSubmit}>
+            <Searchbar/>
+          </form>
+          
           <div className="mb-8 flex gap-2">
+            {/* Knapper for kategorier */}
             <Button
               color={ColorOptions.white}
               icon={IconOptions.QueueList}
-              onClick={() => void router.push("/annonser")}
+              onClick={() => void router.push({pathname: "/annonser", query: {categoryName: "alle"}})} // Sender "alle" for å få alle annonser
               text="Alle verktøy"
               square={true}
             />
             <Button
               color={ColorOptions.white}
               icon={IconOptions.Wrench}
+              onClick={() => void router.push({pathname: "/annonser", query: {categoryName: "Håndverktøy"}})}
               text="Håndverktøy"
               square={true}
             />
             <Button
               color={ColorOptions.white}
               icon={IconOptions.Bolt}
+              onClick={() => void router.push({pathname: "/annonser", query: {categoryName: "Elektroverktøy"}})}
               text="Elektroverktøy"
               square={true}
             />
