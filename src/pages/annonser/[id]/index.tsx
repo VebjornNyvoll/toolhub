@@ -120,6 +120,9 @@ const NyAnnonse: NextPage = () => {
     console.log(averageRating);
     console.log(ratings);
     document.getElementById("averageRating")!.innerHTML = ((Math.round(averageRating * 10) / 10).toFixed(1)) + "/5 basert på " + amountOfRatings + " vurderinger";
+    if(!averageRating){
+      document.getElementById("averageRating")!.innerHTML = "Ingen vurderinger enda";
+    }
   }, [ratings])
 
   useEffect(() => {
