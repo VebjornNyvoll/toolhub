@@ -2,39 +2,6 @@ import { z } from "zod";
 import { createTRPCRouter, publicProcedure, protectedProcedure } from "../trpc";
 
 export const ratingRouter = createTRPCRouter({
-  // create: protectedProcedure
-  //   .input(
-  //     z.object({
-  //       rating: z.number(),
-  //       userRatedId: z.string(),
-  //     })
-  //   )
-  //   .mutation(({ ctx, input }) => {
-  //     return ctx.prisma.rating.create({
-  //       data: {
-  //         userRatingId: ctx.session.user.id,
-  //         userRatedId: input.userRatedId,
-  //         rating: input.rating,
-  //       },
-  //     });
-  //   }),
-  // editRating: protectedProcedure
-  //   .input(
-  //       z.object({
-  //           rating: z.number(),
-  //           userRatedId: z.string(),
-  //       })
-  //   )
-  //   .mutation(({ ctx, input }) => {
-  //       return ctx.prisma.rating.update({
-  //           where: {
-  //             userRatedId_userRatingId : { userRatedId: input.userRatedId, userRatingId: ctx.session.user.id },
-  //           },
-  //           data: {
-  //             rating: input.rating,
-  //           }
-  //         });
-  //       }),
   getRatings: protectedProcedure
     .input(
       z.object({
@@ -66,18 +33,19 @@ export const ratingRouter = createTRPCRouter({
       z.object({
         rating: z.number(),
         userRatedId: z.string(),
+        userRatingId: z.string(),
       })
     )
     .mutation(({ ctx, input }) => {
       return ctx.prisma.rating.upsert({
         where: {
-          userRatedId_userRatingId : { userRatedId: input.userRatedId, userRatingId: ctx.session.user.id },
+          userRatedId_userRatingId : { userRatedId: input.userRatedId, userRatingId: input.userRatingId },
         },
         update: {
           rating: input.rating,
         },
         create: {
-          userRatingId: ctx.session.user.id,
+          userRatingId: input.userRatingId,
           userRatedId: input.userRatedId,
           rating: input.rating,
         },

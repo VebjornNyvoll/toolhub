@@ -16,6 +16,7 @@ import Container from "../../../components/annonse/Container";
 import Swiper from "../../../components/swiper/Swiper";
 import { PencilIcon } from "@heroicons/react/24/outline";
 import InputField from "../../../components/inputs/InputField";
+import test from "node:test";
 
 const NyAnnonse: NextPage = () => {
   const { data: sessionData } = useSession();
@@ -34,13 +35,29 @@ const NyAnnonse: NextPage = () => {
     }
   );
 
-  const ratings = api.rating.getRatings.useQuery({
-    id: user?.id as string,
+  const {data: ratings} = api.rating.getRatings.useQuery({
+    id: id as string,
   });
 
-  const amountOfRatings = api.rating.getAmountOfRatings.useQuery({
-    id: user?.id as string,
-  })
+  let ratingTotal = 0;
+  let averageRating = 0;
+  let amountOfRatings = 0;
+
+  useEffect(() => {
+    ratingTotal = 0;
+    amountOfRatings = 0;
+    if(ratings){
+      ratings.forEach(r => {
+        ratingTotal += r.rating;
+        amountOfRatings++;
+        
+      });
+    }
+    averageRating = ratingTotal / amountOfRatings;
+    document.getElementById("averageRating")!.innerHTML = "Rating: " + ((Math.round(averageRating * 10) / 10).toFixed(1)) + "/5 basert på " + amountOfRatings + " vurderinger";
+    
+  }, [ratings])
+  
 
   const { mutate: addRating } = api.rating.rate.useMutation({
     onSuccess: () => {
@@ -60,18 +77,20 @@ const NyAnnonse: NextPage = () => {
     e.preventDefault();
     
     const target = e.target as typeof e.target & {
-      rating: { value: number };
+      rating: { value: string };
     };
   
-    if(!user==null){
+    if(sessionData?.user && user){
       addRating({
-        rating: target.rating.value,
+        rating: parseFloat(target.rating.value),
         userRatedId: user.id,
+        userRatingId: sessionData.user.id,
       });
     }
-    
+      };
 
-  };
+      
+    
 
   return (
     <>
@@ -91,8 +110,8 @@ const NyAnnonse: NextPage = () => {
             </div>
           </div>
           <p>{`Epost: ${user?.email ? user?.email : "Har ikke epost"}`}</p>
-          <p>
-              {"Antall vurderinger: " + {amountOfRatings}}
+          <p id="averageRating">
+              Rating: {(Math.round(averageRating * 10) / 10).toFixed(1)}/5 basert på {amountOfRatings} vurderinger
           </p>
           
           <form
@@ -103,7 +122,7 @@ const NyAnnonse: NextPage = () => {
             <div className="flex w-full flex-col items-center">
               <Rating 
                 name="rating"
-                precision={0.5}
+                precision={1}
                 defaultValue={0}
                 ></Rating>
               <input
