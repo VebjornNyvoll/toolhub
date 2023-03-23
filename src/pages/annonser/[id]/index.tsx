@@ -19,6 +19,7 @@ import Container from "../../../components/annonse/Container";
 import Swiper from "../../../components/swiper/Swiper";
 import { HeartIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
+import {Rating} from '@mui/material';
 
 const NyAnnonse: NextPage = () => {
   const { data: sessionData } = useSession();
@@ -55,6 +56,11 @@ const NyAnnonse: NextPage = () => {
       enabled: !!advert?.authorId,
     }
   );
+
+  const {data: ratings} = api.rating.getRatings.useQuery({
+    id: author?.id as string,
+  });
+  
 
   const { mutate: favoriteAdvert } = api.favorite.favoriteAd.useMutation({
     onSuccess: (data) => {
@@ -93,6 +99,34 @@ const NyAnnonse: NextPage = () => {
       });
     }
   };
+
+  
+
+  let ratingTotal = 0;
+  let averageRating = 0;
+  let amountOfRatings = 0;
+
+  useEffect(() => {
+    ratingTotal = 0;
+    amountOfRatings = 0;
+    if(ratings){
+      ratings.forEach(r => {
+        ratingTotal += r.rating;
+        amountOfRatings++;
+        
+      });
+    }
+    averageRating = ratingTotal / amountOfRatings;
+    console.log(averageRating);
+    console.log(ratings);
+    document.getElementById("averageRating")!.innerHTML = ((Math.round(averageRating * 10) / 10).toFixed(1)) + "/5 basert på " + amountOfRatings + " vurderinger";
+    if(amountOfRatings == 1){
+      document.getElementById("averageRating")!.innerHTML = ((Math.round(averageRating * 10) / 10).toFixed(1)) + "/5 basert på 1 vurdering";
+    }
+    if(!averageRating){
+      document.getElementById("averageRating")!.innerHTML = "Ingen vurderinger enda";
+    }
+  }, [ratings])
 
   useEffect(() => {
     if (favoritedAd) {
@@ -181,18 +215,8 @@ const NyAnnonse: NextPage = () => {
                     {author?.name}
                   </p>
                   <p>{author?.phone ? author.phone : "Mangler tlf"}</p>
-                  <p>
-                    {author?.totalRatingpoints
-                      ? (
-                          Math.round(
-                            (author.totalRatingpoints / author.totalRatings) *
-                              100
-                          ) / 100
-                        ).toString() +
-                        "/6 (" +
-                        author.totalRatings.toString() +
-                        " rangeringer)"
-                      : "Ikke fått noen ratinger"}
+                  <p id="averageRating">
+                    Ikke fått noen ratinger
                   </p>
                 </div>
               </div>

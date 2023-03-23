@@ -4,7 +4,7 @@ import Head from "next/head";
 import Link from "next/link";
 import Navbar from "../../../components/navbar/Navbar";
 import { signIn, signOut, useSession } from "next-auth/react";
-import Button, { ColorOptions } from "../../../components/buttons/Button";
+import {Rating} from '@mui/material';
 import { useRouter } from "next/router";
 
 import { api } from "../../../utils/api";
@@ -16,6 +16,7 @@ import Container from "../../../components/annonse/Container";
 import Swiper from "../../../components/swiper/Swiper";
 import { PencilIcon } from "@heroicons/react/24/outline";
 import InputField from "../../../components/inputs/InputField";
+import test from "node:test";
 
 const NyAnnonse: NextPage = () => {
   const { data: sessionData } = useSession();
@@ -34,7 +35,36 @@ const NyAnnonse: NextPage = () => {
     }
   );
 
-  const { mutate: addRating } = api.profile.addRating.useMutation({
+  const {data: ratings} = api.rating.getRatings.useQuery({
+    id: id as string,
+  });
+
+  let ratingTotal = 0;
+  let averageRating = 0;
+  let amountOfRatings = 0;
+
+  useEffect(() => {
+    ratingTotal = 0;
+    amountOfRatings = 0;
+    if(ratings){
+      ratings.forEach(r => {
+        ratingTotal += r.rating;
+        amountOfRatings++;
+        
+      });
+    }
+    averageRating = ratingTotal / amountOfRatings;
+    document.getElementById("averageRating")!.innerHTML = "Rating: " + ((Math.round(averageRating * 10) / 10).toFixed(1)) + "/5 basert på " + amountOfRatings + " vurderinger";
+    if(amountOfRatings == 1){
+      document.getElementById("averageRating")!.innerHTML = "Rating: " + ((Math.round(averageRating * 10) / 10).toFixed(1)) + "/5 basert på 1 vurdering";
+    }
+    if(!averageRating){
+      document.getElementById("averageRating")!.innerHTML = "Ingen vurderinger enda";
+    }
+  }, [ratings])
+  
+
+  const { mutate: addRating } = api.rating.rate.useMutation({
     onSuccess: () => {
       ctx.advertisement
         .invalidate()
@@ -49,31 +79,23 @@ const NyAnnonse: NextPage = () => {
   });
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    console.log("Eyyo");
     e.preventDefault();
     
     const target = e.target as typeof e.target & {
       rating: { value: string };
     };
-    const rating: number = +target.rating.value;
-    let totalRatingsPoints = rating;
-    let totalRatings = 1;
-    let userid = "";
-    if (user?.totalRatingpoints == null) {
-      return null;
-    } else {
-      totalRatingsPoints += user.totalRatingpoints;
-      totalRatings += user.totalRatings;
-      userid = user?.id;
+  
+    if(sessionData?.user && user){
+      addRating({
+        rating: parseFloat(target.rating.value),
+        userRatedId: user.id,
+        userRatingId: sessionData.user.id,
+      });
     }
-    
+      };
 
-    addRating({
-      rating: totalRatingsPoints,
-      amountraters: totalRatings,
-      userid: userid,
-    });
-  };
+      
+    
 
   return (
     <>
@@ -93,36 +115,25 @@ const NyAnnonse: NextPage = () => {
             </div>
           </div>
           <p>{`Epost: ${user?.email ? user?.email : "Har ikke epost"}`}</p>
-          <p>
-            {user?.totalRatingpoints
-              ? (
-                  Math.round(
-                    (user.totalRatingpoints / user.totalRatings) * 100
-                  ) / 100
-                ).toString() +
-                "/6 (" +
-                user.totalRatings.toString() +
-                " rangeringer)"
-              : "Ikke fått noen ratinger"}
+          <p id="averageRating">
+              Rating: {(Math.round(averageRating * 10) / 10).toFixed(1)}/5 basert på {amountOfRatings} vurderinger
           </p>
+          
           <form
             title="Gi rating"
             onSubmit={(e) => handleSubmit(e)}
-            className="flex w-full flex-col gap-8"
+            className="flex w-full flex-col"
           >
-            <div className="flex w-full flex-row gap-8">
-              <InputField
-                label=""
-                type="number"
-                min={1}
-                max={6}
+            <div className="flex w-full flex-col items-center">
+              <Rating 
                 name="rating"
-                placeholder="1-6"
-              />
+                precision={1}
+                defaultValue={0}
+                ></Rating>
               <input
                 type="submit"
                 value="Gi rating"
-                className="w-full cursor-pointer rounded-md bg-black px-4 py-2 text-white hover:bg-emerald-700"
+                className="cursor-pointer rounded-md bg-black px-4 py-2 text-white hover:bg-emerald-700"
               />
             </div>
           </form>
