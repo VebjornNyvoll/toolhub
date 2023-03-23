@@ -55,6 +55,9 @@ const NyAnnonse: NextPage = () => {
     }
     averageRating = ratingTotal / amountOfRatings;
     document.getElementById("averageRating")!.innerHTML = "Rating: " + ((Math.round(averageRating * 10) / 10).toFixed(1)) + "/5 basert på " + amountOfRatings + " vurderinger";
+    if(amountOfRatings == 1){
+      document.getElementById("averageRating")!.innerHTML = "Rating: " + ((Math.round(averageRating * 10) / 10).toFixed(1)) + "/5 basert på 1 vurdering";
+    }
     if(!averageRating){
       document.getElementById("averageRating")!.innerHTML = "Ingen vurderinger enda";
     }
