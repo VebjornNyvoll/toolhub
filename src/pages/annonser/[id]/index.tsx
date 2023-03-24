@@ -203,7 +203,7 @@ const NyAnnonse: NextPage = () => {
                   }
                 />
               </div>
-              <div className="flex h-[6rem] w-[16rem] flex-row items-center gap-3 rounded-md bg-gray-100 p-4">
+              <div className="flex h-[10rem] w-[16rem] flex-row items-center gap-3 rounded-md bg-gray-100 p-4">
                 <div className="h-[2.5rem] w-[2.5rem] rounded-full bg-black"></div>
                 <div className="flex flex-col">
                   <p
@@ -215,6 +215,7 @@ const NyAnnonse: NextPage = () => {
                     {author?.name}
                   </p>
                   <p>{author?.phone ? author.phone : "Mangler tlf"}</p>
+                  <p>{author?.address ? author.address : "Mangler addresse"}{author?.city ? ", " + author?.city : ""}</p>
                   <p id="averageRating">
                     Ikke fått noen ratinger
                   </p>
