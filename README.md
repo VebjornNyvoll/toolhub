@@ -1,11 +1,12 @@
 # Toolhub
 
 This is a group project from the course TDT4140 at NTNU. The project was created by group 43 consisting of:
-- Mattias Tofte
-- Klara Wüstenberg
+- [Mattias Tofte](https://github.com/mattiastofte)
+- [Klara Wüstenberg](https://github.com/klarawust)
 - Idun Skretting
-- Håkon Hoelsæter
-- Vebjørn Nyvoll
+- [Håkon Hoelsæter](https://github.com/heiken1108)
+- [Vahide Rezaei](https://github.com/Vahidehr)
+- [Vebjørn Nyvoll](https://github.com/VebjornNyvoll)
 
 The project utilizes [T3 Stack](https://create.t3.gg/) and has been designed based on criteria from a product owner (student assistant). It is therefore based on the following technologies:
 - [Next.js](https://nextjs.org)
@@ -24,8 +25,11 @@ The tool page shows users the available tools and once you have booked a tool it
 ## How to use the project
 
 Intiializing the project for the first time is rather easy. All you have to do is run the following commands:
-'''
+```
 yarn
 yarn dev
-'''
+```
 Running the yarn command will automatically load the environment variables and run prisma generate, which will load the Prisma schema.
+
+## Notes
+Please note this project was pushed to Github from Gitlab, which is why commit history etc. is not included.
