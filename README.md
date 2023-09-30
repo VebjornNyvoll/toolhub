@@ -32,4 +32,4 @@ yarn dev
 Running the yarn command will automatically load the environment variables and run prisma generate, which will load the Prisma schema.
 
 ## Notes
-Please note this project was pushed to Github from Gitlab, which is why commit history etc. is not included.
+Please note this project was pushed to Github from Gitlab, which is why issues etc. may be lost.
